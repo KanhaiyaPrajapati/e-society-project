@@ -1,13 +1,13 @@
 [
     {
-        "name": "email",
+        "name": "userNameOrEmail",
         "conditions": [
             {
-                "condition": "obj.email == undefined || obj.email == ''",
+                "condition": "obj.userNameOrEmail == undefined || obj.userNameOrEmail == ''",
                 "error": "Email is Required"
             },
             {
-                "condition": "!(obj.email.includes('@gmail') || obj.email.includes('@outlook'))",
+                "condition": "!(obj.userNameOrEmail.includes('@') || obj.userNameOrEmail.includes('@outlook'))",
                 "error": "Email is not valid"
             }
          ]
