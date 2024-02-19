@@ -1,0 +1,26 @@
+[
+    {
+        "name": "email",
+        "conditions": [
+            {
+                "condition": "obj.email == undefined || obj.email == ''",
+                "error": "Email is Required"
+            },
+            {
+                "condition": "!(obj.email.includes('@gmail') || obj.email.includes('@outlook'))",
+                "error": "Email is not valid"
+            }
+         ]
+    },
+    {
+        "name":"password",
+        "conditions": [
+            {
+                "condition": "obj.password == undefined || obj.password == '' ",
+                "error": "Password is Required"
+            }
+            
+         ]
+    }
+
+ ]
