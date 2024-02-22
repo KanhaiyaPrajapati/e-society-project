@@ -5,13 +5,19 @@ import Login from './Components/Login';
 import Dashboard from './Components/Dashboard';
 import Users from './Components/Users';
 import Properties from './Components/Properties';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { NumberContext } from './Components/NewContext';
-function App() {
-  let [item, setitem] = useState(false)
-  item = JSON.parse(localStorage.getItem("item"))
-  console.log(item);
+import { useDispatch } from 'react-redux';
+import { getapi } from './Redux/action/action';
 
+function App() {
+let [item, setitem] = useState(false)
+item = JSON.parse(localStorage.getItem("item"))
+const dispatch = useDispatch()
+
+useEffect(() => {
+  dispatch(getapi())
+},[])
 
 return (
     <>
@@ -19,7 +25,7 @@ return (
       <NumberContext.Provider value={{item, setitem}}>
       <Routes>
         {
-          item == true ?
+          item === true ?
           <>
           <Route path='/' element={<Navigate to='/dashboard' />} />
           <Route path ='/dashboard' element={<Dashboard/>} />
@@ -39,9 +45,7 @@ return (
       </Routes>
       </NumberContext.Provider>
     </BrowserRouter>
-      
-      
-    </>
+   </>
   );
 }
 

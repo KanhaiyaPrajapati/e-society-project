@@ -1,6 +1,6 @@
 *{
-  font-family: "Protest Riot", sans-serif;
-  font-weight: 400;
+  font-family: "Lato", sans-serif;
+  font-weight: 700;
   font-style: normal;
 }
 @property --angle {
@@ -65,11 +65,11 @@ box-shadow: 5px 0px 8px 0px lightgray;
 }
 .sidebar .sidebar-menu div {
   color: whitesmoke;
-  padding: 5px 10px;
+  padding: 10px 5px;
   margin: 5px;
   transition: 0.3s;
-  border-radius: 3px;
-  font-size: 28px;
+  border-radius:3px;
+  font-size: 22px;
 }
 .sidebar .sidebar-menu a {
  text-decoration: none !important;
@@ -82,7 +82,79 @@ box-shadow: 5px 0px 8px 0px lightgray;
   background-color: white;
   color: rgb(12, 32, 33);
 }
+.p-paginator {
+  background: #ffffff;
+  color: #6b7280;
+  border: solid #f3f4f6;
+  border-width: 0;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  gap: 10px;
+  margin-top: 30px;
+}
+.p-link {
+  text-align: left;
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  
+}
+.p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background: #dee1e4e8;
+  border-color: #ecfeff;
+  color:black;
+}
+.p-paginator .p-paginator-pages .p-paginator-page {
+  background-color: transparent;
+  border: 0 none;
+  color: #6b7280;
+  min-width: 3rem;
+  height: 3rem;
+  margin: 0.143rem;
+  transition: box-shadow 0.2s;
+  border-radius: 50%;
+}
+.p-column-title{
+  background-color:#dee1e4e8 !important;
+  width: 100% !important;
+  
+}
+.datatable{
+  text-align: center;
+  background-color: #f5f5f5; 
+  font-size: 17px;
+  border: 0.5px solid #dfd5d5;
+  border-radius: 5px;
+  line-height: 52px !important;
+}
 
+.p-datatable .p-datatable-tbody > tr > td {
+    border: 1px solid #d2d4db;
+    border-width: 0 0 1.5px 0;
+    padding: 0.2rem 0.2rem;
+}
+
+#custom-modal {
+  display: none;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#custom-modal table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+#custom-modal th, #custom-modal td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
 
 
 

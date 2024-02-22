@@ -1,13 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import LoginValidation from '../loginvalidation.json'
-import { Navigate, json, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { NumberContext } from './NewContext';
 
 function Login() {
-
     const [obj, setobj] = useState({userNameOrEmail:'',password:''})
     const [blankobj, setblankobj] = useState({})
     const [erroMsg, seterroMsg] = useState({})
@@ -21,21 +20,10 @@ function Login() {
     const getvalue = (e) =>{
         obj[e.target.name] = e.target.value;
         blankobj[e.target.name] = '';
-        // console.log(obj);
         setblankobj({...blankobj})
         ValidationFunction(e.target.name)
     }
-
-    // const LoginApi = () =>{
-    //    axios.post('http://localhost:8000/api/user/login',obj).then((res)=>{
-    //     console.log(res.data);
-    //     console.log(res.data.message);
-    //     }).catch((err)=>{
-    //         console.log(err);
-    //     }) 
-    // }
-
-    let use = useContext(NumberContext);
+     let use = useContext(NumberContext);
     const SubmitData = async () => {
         Object.keys(obj).forEach((x) => {
             ValidationFunction(x);
@@ -69,8 +57,8 @@ function Login() {
         }
         setobj({ ...blankobj });
     };
-     const ValidationFunction = (name) =>{
-        let validationobj = LoginValidation.find((x)=>x.name == name);
+        const ValidationFunction = (name) =>{
+        let validationobj = LoginValidation.find((x)=>x.name === name);
         let valid = validationobj?.conditions.find((x)=>eval(x.condition))
         if(valid){
             erroMsg[name]=valid.error;
