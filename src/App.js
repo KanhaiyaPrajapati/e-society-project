@@ -2,13 +2,13 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {BrowserRouter, Navigate, Route, Routes} from 'react-router-dom'; 
 import Login from './Components/Login';
-import Dashboard from './Components/Dashboard';
 import Users from './Components/Users';
 import Properties from './Components/Properties';
 import { useEffect, useState } from 'react';
 import { NumberContext } from './Components/NewContext';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getapi } from './Redux/action/action';
+import Dashboard from './Components/Dashboard';
 
 function App() {
 let [item, setitem] = useState(false)
@@ -20,7 +20,7 @@ useEffect(() => {
 },[])
 
 return (
-    <>
+  <>
       <BrowserRouter>
       <NumberContext.Provider value={{item, setitem}}>
       <Routes>
@@ -38,7 +38,6 @@ return (
           <Route path='/'  element = {<Navigate to = '/login'/>}/>
           <Route path='/login' element ={<Login/>} />
           <Route path='*' element={<Navigate to='/login' />} />
-          
           </>
         
       }

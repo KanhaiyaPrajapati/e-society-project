@@ -1,0 +1,80 @@
+[
+    {
+        "name":"firstName",
+        "conditions":[
+            {
+                "condition": "obj.firstName == undefined || obj.firstName == ''",
+                "error": "firstName is Required"
+            },
+            {
+                "condition": "!checkAlphabet.test(obj.firstName)",
+                "error": "First Name must Containe alphabate only"
+            },
+            {
+                "condition": "obj.firstName.length < 3 " ,
+                "error": "First Name must Containe 3 letters only"  
+            }
+        ]
+    },
+    {
+        "name":"lastName",
+        "conditions":[
+            {
+                "condition": "obj.lastName == undefined || obj.lastName == ''",
+                "error": "lastName is Required"
+            },
+            {
+                "condition": "!checkAlphabet.test(obj.lastName)",
+                "error": "lastName Name must Containe alphabate only"
+            }, {
+                "condition": "obj.lastName.length < 3 " ,
+                "error": "lastName Name must Containe 3 letters only"  
+            }
+        ]
+    },
+    {
+    
+        "name": "email",
+        "conditions": [
+            {
+                "condition": "obj.email == undefined || obj.email == '' ",
+                "error": "Email is Required"
+            },
+            {
+                "condition": "!(obj.email.includes('@gmail') || obj.email.includes('@outlook'))",
+                "error": "Email is not valid"
+            }
+        ]
+    },
+    {
+        "name": "phone",
+        "conditions": [
+            {
+                "condition": "obj.phone == undefined || obj.phone == '' ",
+                "error": "phone is Required"
+            },
+            {
+                "condition": "obj.phone.length !=10 || obj.phone <=0 || !(/^[0-9]*$/.test(obj.phone))",
+                "error": "phone number is not valid"
+            }
+        ]
+    },
+    {
+        "name": "role",
+        "conditions": [
+            {
+                "condition": "obj.role == undefined || obj.role == ''",
+                "error": "role is Required"
+            }
+        ]
+    },
+    {
+        "name": "propertyId",
+        "conditions": [
+            {
+                "condition": "obj.propertyId == undefined || obj.propertyId == ''",
+                "error": "propertyId is Required"
+            }
+        ]
+    }
+]

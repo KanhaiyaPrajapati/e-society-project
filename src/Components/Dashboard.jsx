@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {Hoc} from "./Hoc";
 import { Bar, Doughnut, Line, Pie, PolarArea, Radar } from 'react-chartjs-2';
 import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 function Dashboard() {
   const Data = [
@@ -64,9 +66,15 @@ function Dashboard() {
       }
     ]
   });
+
+  useEffect(() => {
+    AOS.init({duration:1000})
+  },[])
+  
+
   return (
     <>
-    <div className='d-flex gap-1 py-3 mt-2'>
+<div className='d-flex gap-1 py-3 mt-2' data-aos='fade-up'>
     
     <div className="chart-container text-center px-4" style={{width:'33%',height:'300px'}}>
       {/* <h3 style={{ textAlign: "center" }}>Pie Chart</h3> */}
@@ -115,8 +123,8 @@ function Dashboard() {
   {/* line chart */}
 
 
-  <div className='d-flex justify-content-space-evenly g-2 mt-5' style={{height:'400px'}}>
-    <div className="chart-container">
+  <div className='d-flex justify-content-space-evenly g-2 mt-5' style={{height:'400px'}}  >
+    <div className="chart-container" >
       <Line style={{height:'380px',width:"21%"}}
         data={chartData}
         options={{
@@ -156,7 +164,7 @@ function Dashboard() {
         />
     </div>     
 
-    </div>
+</div>
     </>
   );
 }

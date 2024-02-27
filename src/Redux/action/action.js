@@ -1,23 +1,14 @@
 import axios from "axios"
 import { GETAPI } from "../type/type"
-import { Button, Modal } from "react-bootstrap";
-import { useState } from "react";
-import Swal from "sweetalert2";
 
 let token = JSON.parse(localStorage.getItem('token'));
-console.log(token);
-
 const auth = {
   headers: {
     Authorization: `Bearer ${token}`
   }
 }
 
-
-
-
 export const getapi = () =>{
-  console.log(auth);
   return (dispatch) =>{
     axios.get("http://localhost:8000/api/user/", auth).then((res)  => {
       dispatch({type:GETAPI,data:res.data})
@@ -49,7 +40,7 @@ export const DeleteApidata = (id,auth) =>{
   }
 }
 
-export const EditApiData = (obj) =>{
+export const EditApiData = (obj,auth) =>{
   return (dispatch) =>{
     axios.put(`http://localhost:8000/api/user/${obj.id}`,obj,auth).then((res) => {
       console.log(res.data);
@@ -59,16 +50,17 @@ export const EditApiData = (obj) =>{
 });
   }
 }
-export const ViewApiData = (id) =>{
-return () =>{
+
+export const ViewApiData = (id,setLgShow,setViewedUser) =>{
+return (dispatch) =>{
      axios.get(`http://localhost:8000/api/user/${id}`,auth).then((res) => {
       console.log(res.data);
-  }).catch((err) => {
+      setViewedUser(res.data)
+      setLgShow(true)
+    }).catch((err) => {
       console.log(err.response);
-      console.log(id);
-  });
- 
-  }
+     });
+   }
 }
 
 

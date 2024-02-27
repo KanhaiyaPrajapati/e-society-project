@@ -1,6 +1,7 @@
 import {combineReducers} from "redux"
-import { AdminApiCrudReducer } from "./AdminApiCrudReducer"
+import { AdminApiCrudReducer, PropertyApiCrudReducer } from "./AdminApiCrudReducer"
 
 export const rootreducer = combineReducers({
-    api:AdminApiCrudReducer
+    api:AdminApiCrudReducer,
+    propertyapi:PropertyApiCrudReducer
 })
