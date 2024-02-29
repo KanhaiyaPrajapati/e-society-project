@@ -7,7 +7,7 @@ import Properties from './Components/Properties';
 import { useEffect, useState } from 'react';
 import { NumberContext } from './Components/NewContext';
 import { useDispatch, useSelector } from 'react-redux';
-import { getapi } from './Redux/action/action';
+import { PropertgetApi, getapi } from './Redux/action/action';
 import Dashboard from './Components/Dashboard';
 
 function App() {
@@ -19,6 +19,9 @@ useEffect(() => {
   dispatch(getapi())
 },[])
 
+useEffect(() => {
+  dispatch(PropertgetApi())
+}, [])
 return (
   <>
       <BrowserRouter>

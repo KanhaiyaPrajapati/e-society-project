@@ -1,5 +1,5 @@
 import axios from "axios"
-import { GETAPI } from "../type/type"
+import { GETAPI, GETPROPERTYID } from "../type/type"
 
 let token = JSON.parse(localStorage.getItem('token'));
 const auth = {
@@ -62,6 +62,23 @@ return (dispatch) =>{
      });
    }
 }
+
+//------------------------------ PropertyApi Starts Here --------------------------------
+
+export const PropertgetApi = () =>{
+  return(dispatch)=>{
+    axios.get('http://localhost:8000/api/property/available/property',auth).then((res)=>{
+    dispatch({type:GETPROPERTYID, data:res.data.inactiveProperties})
+    }).catch((err)=>{
+      console.log(err.response);
+    })
+  }
+}
+
+
+
+
+
 
 
 

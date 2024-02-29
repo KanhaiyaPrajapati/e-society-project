@@ -1,4 +1,4 @@
-import { GETAPI, GETPROPERTYID } from "../type/type";
+import { GETAPI } from "../type/type";
 const initialState = [];
 export const AdminApiCrudReducer = (state = initialState , action) =>{
    switch(action.type){
@@ -12,14 +12,3 @@ export const AdminApiCrudReducer = (state = initialState , action) =>{
 }
 
 
-const initialState1 = [];
-export const PropertyApiCrudReducer =(state = initialState1,action)=>{
-  switch(action.type){
-   case GETPROPERTYID:
-      return action.data
-   
-   default:
-      return state;
-}
-    
-}
