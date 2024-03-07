@@ -11,11 +11,14 @@ import propertyimage from '../images/property1.png';
 import Tenets from '../images/homeLogo4.png';
 import manager from '../images/manager8.png';
 import workers from '../images/manager7.png';
+import blocksimg from '../images/Property.png';
+import unitsimg from '../images/home3.png';
 import axios from "axios"
-
 
 function Dashboard() {
   const [dashboarddata, setdashboarddata] = useState('')
+  const [blocks, setblocks] = useState('')
+  const [units, setunits] = useState('')
 
   let token = JSON.parse(localStorage.getItem('token'));
   console.log(token);
@@ -24,6 +27,34 @@ function Dashboard() {
       Authorization: `Bearer ${token}`
     }
   };
+  useEffect(() => {
+   const fetchingdata = async () =>{
+    try{
+        let response = await axios.get('http://localhost:8000/api/blocks/count/blocks',auth)
+        console.log(response.data);
+        setblocks(response.data)
+    }catch(error){
+      console.log(error.response);
+    }
+   }
+   fetchingdata()
+  }, []);
+
+  useEffect(() => {
+    const fetchingunitdata = async () =>{
+      try{
+        let response = await axios.get('http://localhost:8000/api/units/available/units',auth)
+        console.log(response.data);
+        setunits(response.data)
+      }catch(error){
+        console.log(error.response);
+      }
+    }
+    fetchingunitdata()
+  }, [])
+  
+
+
 
 useEffect(() => {
 axios.get('http://localhost:8000/api/property/count/property',auth).then((res)=>{
@@ -33,6 +64,8 @@ setdashboarddata(res.data)
   console.log(err.res);
 })
 }, [])
+
+
 
 const Data = [
     {
@@ -102,57 +135,79 @@ return (
     <>
       <div className="container-fluid" >
         <div className="m-0 p-0 px-3 py-3 d-flex" style={{ width: '100%', height: '48vh' }} >
-          <div className="" style={{ width: '50%' }}>
+          <div className = "" style={{ width: '60%' }}>
             <div className="row ms-1 ">
-              <div className="col-12 col-lg-6 col-sm-12 px-4 py-3" data-aos='fade-up-right'>
-                <Card style={{ width: '22rem', height: '11rem' }} className="box1">
+              <div className="col-12 col-lg-4 col-sm-12 px-4 py-3" data-aos='fade-up-right'>
+                <Card style={{ width: '18rem', height: '11rem' }} className="box1">
                   <Card.Body className="ms-2">
                     <Card.Img variant="top" src={propertyimage} className="img-fluid" style={{ width: '100px', height: '70px' }} />
                     <Card.Title>Properties</Card.Title>
                     <Card.Text>
-                      <h3 className="mt-2 ms-4">{dashboarddata?.totalProperties}</h3>
+                      <h3 className="mt-2 ms-2">{dashboarddata?.totalProperties}</h3>
                     </Card.Text>
                  </Card.Body>
                 </Card>
               </div>
-              <div className="col-12 col-lg-6 col-sm-12 px-4 py-3" data-aos='fade-up-left'>
-                <Card style={{ width: '22rem', height: '11rem' }} className="box2">
-                  <Card.Body className="ms-2">
-                    <Card.Img variant="top" src={Tenets} className="img-fluid mt-2" style={{ width: '150px', height: '70px' }} />
-                    <Card.Title>Tenats</Card.Title>
+              <div className="col-12 col-lg-4 col-sm-12 px-4 py-3" data-aos='fade-down-right'>
+                <Card style={{ width: '18rem', height: '11rem' }} className="box3"> 
+                  <Card.Body className="mt-2 ms-2">
+                  <Card.Img variant="top" src={manager} className="img-fluid mt-2" style={{ width: '85px', height: '55px' }} />
+                    <Card.Title>Mangers</Card.Title>
                     <Card.Text>
-                    <h3 className="mt-2 ms-4">{dashboarddata?.totalTenants}</h3>
+                    <h3 className="mt-2 ms-2">{dashboarddata?.totalManagers}</h3>
+                    </Card.Text>
+                  </Card.Body>
+                </Card>
+              </div>
+             <div className="col-12 col-lg-4 col-sm-12 px-4 py-3" data-aos='fade-down-left'>
+                <Card style={{ width: '18rem', height: '11rem' }} className="box4">
+                  <Card.Body className="mt-2 ms-2">
+                  <Card.Img variant="top" src={workers} className="img-fluid mt-2" style={{ width: '85px', height: '50px' }} />
+                    <Card.Title>Workers</Card.Title>
+                    <Card.Text>
+                    <h3 className="mt-2 ms-2">{dashboarddata?.totalWorkers}</h3>
                     </Card.Text>
                   </Card.Body>
                 </Card>
               </div>
             </div>
-            <div className="row  ms-1" >
-              <div className="col-12 col-lg-6 col-sm-12 px-4 py-3" data-aos='fade-down-right'>
-                <Card style={{ width: '22rem', height: '11rem' }} className="box3"> 
-                  <Card.Body className="mt-2 ms-2">
-                  <Card.Img variant="top" src={manager} className="img-fluid mt-2" style={{ width: '85px', height: '55px' }} />
-                    <Card.Title>Mangers</Card.Title>
+            <div className="row ms-1" >
+            <div className="col-12 col-lg-4 col-sm-12 px-4 py-3" data-aos='fade-up-left'>
+                <Card style={{ width: '18rem', height: '11rem' }} className="box2">
+                  <Card.Body className="ms-2">
+                    <Card.Img variant="top" src={Tenets} className="img-fluid mt-2" style={{ width: '150px', height: '70px' }} />
+                    <Card.Title>Tenats</Card.Title>
                     <Card.Text>
-                    <h3 className="mt-2 ms-4">{dashboarddata?.totalManagers}</h3>
+                    <h3 className="mt-2 ms-2">{dashboarddata?.totalTenants}</h3>
                     </Card.Text>
                   </Card.Body>
                 </Card>
               </div>
-              <div className="col-12 col-lg-6 col-sm-12 px-4 py-3" data-aos='fade-down-left'>
-                <Card style={{ width: '22rem', height: '11rem' }} className="box4">
+              <div className="col-12 col-lg-4 col-sm-12 px-4 py-3" data-aos='fade-down-left'>
+                <Card style={{ width: '18rem', height: '11rem' }} className="box4">
                   <Card.Body className="mt-2 ms-2">
-                  <Card.Img variant="top" src={workers} className="img-fluid mt-2" style={{ width: '85px', height: '50px' }} />
-                    <Card.Title>Workers</Card.Title>
+                  <Card.Img variant="top" src={blocksimg} className="img-fluid mt-2 mb-2 mt-2" style={{ width: '95px', height: '45px' }} />
+                    <Card.Title>Blocks</Card.Title>
                     <Card.Text>
-                    <h3 className="mt-2 ms-4">{dashboarddata?.totalWorkers}</h3>
+                    <h3 className="mt-2 ms-2">{blocks?.totalBlocks}</h3>
+                    </Card.Text>
+                  </Card.Body>
+                </Card>
+              </div>
+              <div className="col-12 col-lg-4 col-sm-12 px-4 py-3" data-aos='fade-down-left'>
+                <Card style={{ width: '18rem', height: '11rem' }} className="box4">
+                  <Card.Body className="mt-2 ms-2">
+                  <Card.Img variant="top" src={unitsimg} className="img-fluid mt-2 mb-1" style={{ width: '100px', height: '55px' }} />
+                    <Card.Title><span className="ms-3">Units</span> </Card.Title>
+                    <Card.Text>
+                    <h3 className="mt-2 ms-4">{units?.totalUnits}</h3>
                     </Card.Text>
                   </Card.Body>
                 </Card>
               </div>
             </div>
           </div>
-          <div className="box1 mt-3" style={{ width:'50%',height:"380px"}} data-aos='zoom-in-left'>
+          <div className="box1 mt-3 ms-2" style={{ width:'40%',height:"380px"}} data-aos='zoom-in-left'>
           <div className="row">
           <div className="col-12 col-lg-6 col-sm-12 w-100 px-5 py-0 ">
               <ProgressBar striped variant="success" animated now={90} className="mt-5 mb-3" ></ProgressBar>

@@ -69,7 +69,7 @@ useEffect(() => {
    }
   }
   fecthingdata()
-}, [])
+},[])
 
 useEffect(() => {
 AOS.init({
