@@ -18,7 +18,6 @@ import 'aos/dist/aos.css';
 
 
 function Users() {
-  
  const [lgShow, setLgShow] = useState(false);
  const [propertyOptions, setPropertyOptions] = useState([]);
  const [viewedUser, setViewedUser] = useState('');
@@ -31,6 +30,8 @@ function Users() {
 
  const handleClose = () => setShow(false);
  const handleShow =  () => setShow(true);
+
+ console.log(viewedUser);
 
  let state = useSelector((state)=>state.api)
  let dispatch = useDispatch()
@@ -72,7 +73,7 @@ useEffect(() => {
 
 useEffect(() => {
 AOS.init({
-  duration:1000
+  duration:2000
 });
 },[])
 
@@ -109,7 +110,7 @@ let SubmitData = async () => {
       await ValidationFunction(x);
     }));
     if (Object.keys(errorMsg).length === 0) {
-      if (obj.id) {
+      if (obj.id===undefined) {
         await dispatch(EditApiData(obj, auth));
       } else {
         await dispatch(addapidata(obj, auth));
@@ -145,7 +146,8 @@ const deleteData = (id) =>{
       }
     });
     console.log(dispatch);
-  }
+}
+  
   const Editdata = (data) =>{
     obj=({...data})
     console.log(obj);
@@ -228,14 +230,14 @@ return (
           </Modal>
           </div>
         </div>
-
+                        
   <DataTable className="datatable px-3 py-3 text-dark" value = {filteredData} paginator rows={5} rowsPerPageOptions={[3,5, 10, 25, 50]} tableStyle={{ minWidth: '20rem' }}>
     <Column field="id" header="ID" style={{ width: '10%' }}></Column>
-    <Column field="userName" header="User Name" style={{ width: '15%' }}></Column>
+    <Column field="userName" header="User Name" style={{ width: '20%' }}></Column>
     <Column field="email" header="Email" style={{ width: '20%' }}></Column>
-    <Column field="phone" header="PHONE" style={{ width: '20%' }}></Column>
+    <Column field="phone" header="PHONE" style={{ width: '15%' }}></Column>
     <Column field="role" header="ROLE" style={{ width: '15%' }}></Column>
-    <Column field="propertyId" header="PropId" style={{ width: '10%' }}></Column>
+    <Column field="propertyId" header="PropId" style={{ width: '%' }}></Column>
     <Column header="ACTIONS" style={{ width: '25%' }} body={(rowData) => (
       <div>
           <EditIcon className="text-primary" style={{cursor:'pointer'}} onClick ={()=>Editdata(rowData)}  />
@@ -259,25 +261,26 @@ return (
         <Modal.Body>
             <div className="d-flex justify-content-between px-5 py-3 gap-3 main-container mt-3">
                 <div className="table heading-table">
-                    <h5>FirstName</h5>
-                    <h5 className="mt-4">LastName</h5>
-                    <h5 className="mt-4">Email</h5>
-                    <h5 className="mt-4">Phone</h5>
-                    <h5 className="mt-4">Role</h5>
-                    <h5 className="mt-4">Propeties</h5>
+                    <h5 style={{color:'#f30a49'}}>Property ID</h5>
+                    <h5 style={{color:'#f30a49'}} className="mt-4">FirstName</h5>
+                    <h5 style={{color:'#f30a49'}} className="mt-4">LastName</h5>
+                    <h5 style={{color:'#f30a49'}} className="mt-4">Email</h5>
+                    <h5 style={{color:'#f30a49'}} className="mt-4">Phone</h5>
+                    <h5 style={{color:'#f30a49'}} className="mt-4">Role</h5>
                 </div>
                 <div>
-                  <h5>{viewedUser.firstName}</h5>
-                    <h5 className="mt-4">{viewedUser.lastName}</h5>
-                    <h5 className="mt-4">{viewedUser.email}</h5>
-                    <h5 className="mt-4">{viewedUser.phone}</h5>
-                    <h5 className="mt-4">{viewedUser.role}</h5>
-                    <h5 className="mt-4">{viewedUser.propertyId}</h5>
+                    <h5>{viewedUser.propertyId}</h5>
+                    <h5 style={{color:'#090030'}} className="mt-4">{viewedUser.firstName}</h5>
+                    <h5 style={{color:'#090030'}} className="mt-4" >{viewedUser.lastName}</h5>
+                    <h5  style={{color:'#090030'}}className="mt-4">{viewedUser.email}</h5>
+                    <h5  style={{color:'#090030'}}className="mt-4">{viewedUser.phone}</h5>
+                    <h5 style={{color:'#090030'}} className="mt-4">{viewedUser.role}</h5>
                 </div>
             </div>
         </Modal.Body>
       </Modal>
-</div>
+      </div>
+      
     </>
   );
 }

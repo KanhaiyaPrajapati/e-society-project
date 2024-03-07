@@ -1,3 +1,4 @@
+import * as Yup from "yup";
 import React, { useEffect, useState } from "react";
 import { Hoc } from "./Hoc";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
@@ -11,33 +12,43 @@ import 'aos/dist/aos.css';
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { useDispatch, useSelector } from "react-redux";
-import * as Yup from "yup";
 import { Formik, Form, Field } from "formik";
-import { AddPropertApiData } from "../Redux/action/action";
-
+import { AddPropertyApiData, DeletePropertApi, ViewPropertApiData } from "../Redux/action/action";
+import ApartmentIcon from '@mui/icons-material/Apartment';
+import Swal from "sweetalert2";
+import { NavLink } from "react-router-dom";
+import Tooltip from '@mui/material/Tooltip';
+import Zoom from '@mui/material/Zoom';
 
 function Properties() {
   const [searchInput, setsearchInput] = useState("");
   const [show, setShow] = useState(false);
+  const [lgShow, setLgShow] = useState(false);
+  const [propertviewApi, setpropertviewApi] = useState(null);
+  const [fillobj, setfillobj] = useState({})
 
-  // const [selectedCountry, setSelectedCountry] = useState("");
-  // const [selectedState, setSelectedState] = useState("");
-
+  let view = JSON.parse(localStorage.getItem('propertydata'));
+  console.log(view);
 
   let state = useSelector((state) => state.propertyapi);
   console.log(state);
 
   let dispatch = useDispatch()
- 
 
   let token = JSON.parse(localStorage.getItem("token"));
+
+  let auth = {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  }
 
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
 
- const filteredData = state.filter((user) =>
- user.property_name.toLowerCase().includes(searchInput.toLowerCase())
- );
+  const filteredData = state.filter((user) =>
+    user.property_name.toLowerCase().includes(searchInput.toLowerCase())
+  );
 
   const handleSearchInputChange = (e) => {
     setsearchInput(e.target.value);
@@ -45,9 +56,9 @@ function Properties() {
 
   useEffect(() => {
     AOS.init({
-      duration:1000
+      duration: 2000
     });
-    },[])
+  }, [])
 
   const Propertyvalidation = Yup.object({
     property_name: Yup.string().min(5).required('Please Select Property Name'),
@@ -58,64 +69,49 @@ function Properties() {
     state: Yup.string().required('Please Select State')
   })
 
-  // const handleCountryChange = (e,formikProps) => {
-  //   const selectedValue = e.target.value;
+  const SubmitData = (formdata) => {
+    Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: 'Your work has been saved',
+      showConfirmButton: false,
+      timer: 2500
+    });
+    dispatch(AddPropertyApiData(auth, formdata))
+    handleClose()
+  }
 
-  //  formikProps.setFieldValue('country', selectedValue);
-  //  formikProps.setFieldValue('state', '');
-  // };
+  const deleteapi = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to Delete!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your file has been deleted.",
+          icon: "success"
+        });
+        dispatch(DeletePropertApi(id,auth))
+      }
+    });
+  }
 
-  // const handleStateChange = (e, formikProps) => {
-  //   const selectedValue = e.target.value;
-  //   formikProps.setFieldValue('state', selectedValue);
-  // };
+  const ViewPropertyapi = (id) => {
+    console.log(id);
+    dispatch(ViewPropertApiData(id, setpropertviewApi, setLgShow, auth))
 
-  // const getStatesByCountry = () => {
-  //   switch (selectedCountry) {
-  //     case "India":
-  //       return ["Gujarat", "Maharashtra", "Delhi"];
-  //     case "United States":
-  //       return ["California", "New York", "Texas"];
-  //     case "England":
-  //       return ["London", "Manchester", "Liverpool"];
-  //     default:
-  //       return [];
-  //   }
-  // };
+  }
 
-  // const countryMap = {
-  //   "1": "India",
-  //   "2": "United States",
-  //   "3": "England",
-  // };
-
-
-  // const initialValues = {
-  //   property_name: "",
-  //   property_description: "",
-  //   country: "",
-  //   street: "",
-  //   zipcode: "",
-  //   state: "",
-  // };
-
-  // const handlesubmit = (values, actions) => {
-  //   console.log("Values:", values);
-  //   console.log("Actions:", actions);
-  //   actions.resetForm();
-  // };
-
-  //   const getvalue = (e, fieldName,formikProps ) => {
-  //   const selectedValue = formikProps.values[fieldName];
-  //   const displayedValue = countryMap[selectedValue] || selectedValue;
-  //   console.log(` ${fieldName} : ${displayedValue}`);
- // };
-
- const SubmitData = () =>{
-  
-  handleClose()
- }
-
+  const EditPropertyapi = (rowData) => {
+    setfillobj(rowData)
+    handleShow()
+  }
   return (
     <>
       <div
@@ -151,20 +147,15 @@ function Properties() {
               </Modal.Header>
               <Modal.Body>
                 <Formik
-                  initialValues={{
-                    property_name: "",
-                    property_description: "",
-                    country: "",
-                    street: "",
-                    zipcode: "",
-                    state: "",
-                  }}
+                  initialValues={fillobj}
                   validationSchema={Propertyvalidation}
                   onSubmit={(values, actions) => {
                     console.log("Form Values:", values);
                     actions.resetForm();
+                    SubmitData(values)
                     handleClose();
                   }}
+
                 >
                   {({ errors, dirty, isValid }) => (
                     <Form>
@@ -215,7 +206,7 @@ function Properties() {
                         </Field>
                         {errors.country && <span className='text-danger ms-2'>{errors.country}</span>}
                       </div>
-                     
+
                       <div className="mb-4">
                         <Field
                           type="number"
@@ -242,33 +233,116 @@ function Properties() {
         </div>
 
         {/*--------------------------------------------------- Table Start Here-------------------------------------------- */}
-       
+
         <DataTable
           className="datatable px-3 py-3 text-dark"
           value={filteredData}
           paginator
           rows={5}
           rowsPerPageOptions={[3, 5, 10, 25, 50]}
-          tableStyle={{ minWidth: "20rem" }}
-        >
-          <Column field="id" header="ID" style={{ width: "10%" }}></Column>
+          tableStyle={{ minWidth: "20rem" }}>
+
+          <Column field="id" header="ID" style={{ width: "5%" }}></Column>
           <Column field="property_name" header="Property Name" style={{ width: "15%" }}></Column>
-          <Column field="property_description" header="Property Description" style={{ width: "20%" }}></Column>
+          <Column field="property_description" header="Property Des" style={{ width: "20%" }}></Column>
           <Column field="street" header="Street" style={{ width: "10%" }}></Column>
           <Column field="state" header="State" style={{ width: "10%" }}></Column>
           <Column field="country" header="Country" style={{ width: "10%" }}></Column>
           <Column field="zipcode" header="Zipcode" style={{ width: "10%" }}></Column>
           <Column header="ACTIONS" style={{ width: "25%" }} body={(rowData) => (
-              <div>
-                <EditIcon className="text-primary" style={{ cursor: "pointer" }}/>
-                <DeleteForeverIcon className="text-danger ms-2" style={{ cursor: "pointer" }}/>
-                <VisibilityIcon className="ms-2" style={{ cursor: "pointer" }}></VisibilityIcon>
-              </div>
-            )}>
+            <div>
+              <EditIcon className="text-primary" style={{ cursor: "pointer" }} onClick={() => EditPropertyapi(rowData)} />
+              <DeleteForeverIcon className="text-danger ms-2" style={{ cursor: "pointer" }} onClick={() => deleteapi(rowData.id)} />
+              <VisibilityIcon className="ms-2" style={{ cursor: "pointer" }} onClick={() => ViewPropertyapi(rowData.id)} ></VisibilityIcon>
+              <Tooltip TransitionComponent={Zoom} title="Blocks">
+                  <NavLink to='/blocks'><ApartmentIcon className="apartment-icon ms-2 text-primary" style={{ cursor: "pointer" }} /></NavLink>
+              </Tooltip>
+            </div>
+          )}>
           </Column>
         </DataTable>
+        <Modal
+          size="lg"
+          show={lgShow}
+          onHide={() => setLgShow(false)}
+          aria-labelledby="example-modal-sizes-title-lg">
+          <Modal.Header closeButton>
+            <Modal.Title id="example-modal-sizes-title-lg">
+              View Property Data
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+
+            <div className="d-flex justify-content-around  px-5 py-3  main-container mt-3 ">
+              <div className="mb-4">
+                <h5 style={{ color: '#f30a49' }} className="mb-3">Property ID </h5>
+                <h5 style={{ color: '#f30a49' }} className="mb-3">Property Name </h5>
+                <h5 style={{ color: '#f30a49' }} className="mb-3">Property Des </h5>
+              </div>
+              <div className="">
+                <h5 style={{ color: '#090030' }} className="mb-3">{view?.id}</h5>
+                <h5 style={{ color: '#090030' }} className="mb-3">{view?.property_name}</h5>
+                <h5 style={{ color: '#090030' }} className="mb-3">{view?.property_description}</h5>
+              </div>
+            </div>
+          </Modal.Body>
+        </Modal>
       </div>
     </>
   );
 }
 export default Hoc(Properties);
+
+
+// const handleCountryChange = (e,formikProps) => {
+//   const selectedValue = e.target.value;
+
+//  formikProps.setFieldValue('country', selectedValue);
+//  formikProps.setFieldValue('state', '');
+// };
+
+// const handleStateChange = (e, formikProps) => {
+//   const selectedValue = e.target.value;
+//   formikProps.setFieldValue('state', selectedValue);
+// };
+
+// const getStatesByCountry = () => {
+//   switch (selectedCountry) {
+//     case "India":
+//       return ["Gujarat", "Maharashtra", "Delhi"];
+//     case "United States":
+//       return ["California", "New York", "Texas"];
+//     case "England":
+//       return ["London", "Manchester", "Liverpool"];
+//     default:
+//       return [];
+//   }
+// };
+
+// const countryMap = {
+//   "1": "India",
+//   "2": "United States",
+//   "3": "England",
+// };
+
+
+// const initialValues = {
+//   property_name: "",
+//   property_description: "",
+//   country: "",
+//   street: "",
+//   zipcode: "",
+//   state: "",
+// };
+
+// const handlesubmit = (values, actions) => {
+//   console.log("Values:", values);
+//   console.log("Actions:", actions);
+//   actions.resetForm();
+// };
+
+//   const getvalue = (e, fieldName,formikProps ) => {
+//   const selectedValue = formikProps.values[fieldName];
+//   const displayedValue = countryMap[selectedValue] || selectedValue;
+//   console.log(` ${fieldName} : ${displayedValue}`);
+// };

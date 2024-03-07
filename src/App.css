@@ -1,5 +1,6 @@
 *{
-  font-family: "Lato", sans-serif;
+  font-family: "Urbanist", sans-serif;
+  font-optical-sizing: auto;
   font-weight: 700;
   font-style: normal;
 }
@@ -160,6 +161,7 @@ box-shadow: 5px 0px 8px 0px lightgray;
   box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
   transition: transform 0.30s ease-in-out;
   border-radius: 10px;
+ 
 }
 
 .main-container:hover {
@@ -176,6 +178,8 @@ div h5 .heading-table{
   font-size: 15px;
 
 }
+
+
   .p-toast-message {
     background-color: rgba(255, 0, 0, 0.5); 
     color: #ffffff; 
@@ -201,6 +205,25 @@ div h5 .heading-table{
     background:#fb5238 !important;
    
   }
+  .box1{
+    box-shadow: rgba(0, 0, 0, 0.20) 0px 5px 15px;
+  }
+  .box2{
+    box-shadow: rgba(0, 0, 0, 0.20) 0px 5px 15px;
+  }
+  .box3{
+    box-shadow: rgba(0, 0, 0, 0.20) 0px 5px 15px;
+  }
+  .box4{
+    box-shadow: rgba(0, 0, 0, 0.20) 0px 5px 15px;
+  }
+  .charts{
+    box-shadow: rgba(0, 0, 0, 0.50) 0px 5px 15px;
+    height: 415px;
+  }
+
+
+ 
 
   
   

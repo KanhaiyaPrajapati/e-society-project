@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { NumberContext } from './NewContext';
 import Swal from 'sweetalert2';
+import heroimg from '../images/seo.gif'
 
     function Login() {
     const toast = useRef(null);
@@ -25,8 +26,6 @@ import Swal from 'sweetalert2';
         setblankobj({...blankobj})
         ValidationFunction(e.target.name)
     }
-
-
 
     let use = useContext(NumberContext);
      const SubmitData = async () => {
@@ -95,10 +94,10 @@ import Swal from 'sweetalert2';
    <div className='bada-header'>
      <div className='container-fluid shadow-lg loginform moving-border'>
         <div className='image-loginform'>
-            <img src='https://picsum.photos/400/400' alt="" className='img-fluid' style={{objectFit:'cover',borderRadius:'2px'}} />
+            <img src = {heroimg} loop muted autoPlay width={400} height={350} style={{background:'transparent',objectFit:'cover'} } ></img>
         </div>
         <div className='w-50 px-3 py-3 my-2 mx-3'>
-        <h1 className=' mb-3 fs-2 text-white'>Login form</h1>
+        <h1 className=' mb-3 fs-2 text-white mt-2'>Login form</h1>
         <form action="" className=''>
        <FloatingLabel controlId="floatingInput" label="Email address" className="mb-4">
             <Form.Control type="email"  className='w-100' name='userNameOrEmail' value={obj.userNameOrEmail} onChange={getvalue}/>
