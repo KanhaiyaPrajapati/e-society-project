@@ -29,8 +29,8 @@ export const Hoc = (Component) => {
           <img src={Home} alt="" height={60} width={80}  />
         </div>
         <div className="sidebar-menu mt-5 m-3">
-          <NavLink to='/dashboard'><div><img src={Dashboardiconpng}  height={20} width={25} className='img-fluid'/><span className='px-1 py-5 fs-4 ms-1 mt-2'>Dashboard</span> </div></NavLink>
-          <NavLink to='/user'><div className="mt-3"><img src={users}  height={20} width={25} className='img-fluid'/><span className=' '> Users</span></div></NavLink>
+          <NavLink to='/dashboard'><div><img src={Dashboardiconpng} height={20} width={22} className='img-fluid'/><span className='ms-2 mt-2'>Dashboard</span> </div></NavLink>
+          <NavLink to='/user'><div className="mt-3"><img src={users} height={20} width={25} className='img-fluid'/><span className=' '> Users</span></div></NavLink>
           <NavLink to='/properties'><div className="mt-3"><img src={Property}  height={23} width={25} className='img-fluid'/><span className='px-2 py-2 fs-4 '>Properties</span></div></NavLink>
         </div>
         <div className='text-center'>

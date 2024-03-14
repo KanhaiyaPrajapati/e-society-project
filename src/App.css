@@ -178,8 +178,6 @@ div h5 .heading-table{
   font-size: 15px;
 
 }
-
-
   .p-toast-message {
     background-color: rgba(255, 0, 0, 0.5); 
     color: #ffffff; 
@@ -208,19 +206,86 @@ div h5 .heading-table{
   .box1{
     box-shadow: rgba(0, 0, 0, 0.20) 0px 5px 15px;
   }
-  .box2{
-    box-shadow: rgba(0, 0, 0, 0.20) 0px 5px 15px;
-  }
-  .box3{
-    box-shadow: rgba(0, 0, 0, 0.20) 0px 5px 15px;
-  }
-  .box4{
-    box-shadow: rgba(0, 0, 0, 0.20) 0px 5px 15px;
-  }
+ 
   .charts{
+    height:410px;
     box-shadow: rgba(0, 0, 0, 0.50) 0px 5px 15px;
-    height: 415px;
+    /* border: 1px solid black; */
   }
+
+  .table-container {
+    width: 90%;
+    margin: 0 auto;
+    overflow-x: auto;
+   
+  }
+  
+  .datatable-container {
+    margin-top: 20px;
+  }
+  
+  .datatable {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .datatable th,
+  .datatable td {
+    padding: 8px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+  }
+  .search-input {
+    width: 150px;
+  }
+  .error_msg {
+    color: red;
+  }
+ 
+ /* Media Queries */
+
+ @media only screen and (max-width: 768px) {
+  .datatable th,
+  .datatable td {
+    font-size: 12px;
+    padding: 5px;
+  }
+}
+
+@media only screen and (max-width: 576px) {
+  .search-input {
+    width: 100%;
+  }
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 992px) {
+  .box1 {
+    width: 100%;
+    max-width: 50%; /* Display two cards per row on medium devices */
+  }
+}
+
+@media (max-width: 768px) {
+  .box1 {
+    width: 100%;
+    max-width: 100%; /* Display one card per row on small devices */
+  }
+}
+
+@media (max-width: 576px) {
+  .box1 {
+    width: 100%;
+    max-width: 100%; /* Display one card per row on extra small devices */
+  }
+}
+
+.progress {
+  height:20px; /* Adjust the height of progress bars */
+}
+
+
+  
 
 
  

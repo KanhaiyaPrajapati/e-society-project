@@ -13,19 +13,28 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field } from "formik";
-import { AddPropertyApiData, DeletePropertApi, ViewPropertApiData } from "../Redux/action/action";
+import { AddPropertyApiData, DeletePropertApi, EditPropertyApidata, ViewPropertApiData } from "../Redux/action/action";
 import ApartmentIcon from '@mui/icons-material/Apartment';
 import Swal from "sweetalert2";
 import { NavLink } from "react-router-dom";
 import Tooltip from '@mui/material/Tooltip';
 import Zoom from '@mui/material/Zoom';
+import icons from '../images/Property.png'
+import AddIcon from '@mui/icons-material/Add';
 
 function Properties() {
   const [searchInput, setsearchInput] = useState("");
   const [show, setShow] = useState(false);
   const [lgShow, setLgShow] = useState(false);
   const [propertviewApi, setpropertviewApi] = useState(null);
-  const [fillobj, setfillobj] = useState({})
+  const [fillobj, setfillobj] = useState({
+    property_name:'',
+    property_description:'',
+    street:'',
+    state:'',
+    country:'',
+    zipcode:''
+})
 
   let view = JSON.parse(localStorage.getItem('propertydata'));
   console.log(view);
@@ -69,7 +78,7 @@ function Properties() {
     state: Yup.string().required('Please Select State')
   })
 
-  const SubmitData = (formdata) => {
+  const SubmitData = (obj) => {
     Swal.fire({
       position: 'center',
       icon: 'success',
@@ -77,7 +86,12 @@ function Properties() {
       showConfirmButton: false,
       timer: 2500
     });
-    dispatch(AddPropertyApiData(auth, formdata))
+    if(obj.id === undefined){
+      dispatch(AddPropertyApiData(obj, auth))
+    }
+    else{
+      dispatch(EditPropertyApidata(obj,auth))
+    }
     handleClose()
   }
 
@@ -97,7 +111,7 @@ function Properties() {
           text: "Your file has been deleted.",
           icon: "success"
         });
-        dispatch(DeletePropertApi(id,auth))
+        dispatch(DeletePropertApi(id, auth))
       }
     });
   }
@@ -105,17 +119,16 @@ function Properties() {
   const ViewPropertyapi = (id) => {
     console.log(id);
     dispatch(ViewPropertApiData(id, setpropertviewApi, setLgShow, auth))
-
   }
 
-  const EditPropertyapi = (rowData) => {
-    setfillobj(rowData)
+  const EditPropertyapi = (obj) => {
+    setfillobj(obj)
     handleShow()
   }
   return (
     <>
       <div
-        className="shadow-lg mx-auto mt-5"
+        className="shadow-lg mx-auto mt-5 border border-warning"
         style={{ width: "90%" }}
         data-aos="zoom-in-up"
       >
@@ -132,12 +145,12 @@ function Properties() {
               onChange={handleSearchInputChange}
             />
             <button
-              className="btn btn-danger"
-              style={{ width: "80px" }}
+              className="btn"
+              style={{ width: "83px", backgroundColor:'rgb(12, 32, 33)'}}
               onClick={handleShow}
             >
-              <PersonAddAltIcon />
-            </button>
+            <img src={icons} alt=""height={20} width={30} className="" /><sup className="text-white"> <AddIcon/></sup>
+              </button>
 
             {/*--------------------------------------- Model Starts Here ------------------------------------------- */}
 
@@ -255,7 +268,7 @@ function Properties() {
               <DeleteForeverIcon className="text-danger ms-2" style={{ cursor: "pointer" }} onClick={() => deleteapi(rowData.id)} />
               <VisibilityIcon className="ms-2" style={{ cursor: "pointer" }} onClick={() => ViewPropertyapi(rowData.id)} ></VisibilityIcon>
               <Tooltip TransitionComponent={Zoom} title="Blocks">
-                  <NavLink to='/blocks'><ApartmentIcon className="apartment-icon ms-2 text-primary" style={{ cursor: "pointer" }} /></NavLink>
+                <NavLink to='/blocks'><ApartmentIcon className="apartment-icon ms-2 text-primary" style={{ cursor: "pointer" }} /></NavLink>
               </Tooltip>
             </div>
           )}>
