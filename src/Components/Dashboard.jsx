@@ -100,8 +100,7 @@ function Dashboard() {
 
   return (
     <>
-    
-      <div className="container-fluid">
+    <div className="container-fluid">
         <div className="m-0 p-0 px-3 py-3 d-flex ">
           <div className="ms-2 mb-3" style={{ width: '100%', maxWidth: '60%' }} data-aos="fade-up-right">
             <div className="row">

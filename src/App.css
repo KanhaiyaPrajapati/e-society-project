@@ -35,8 +35,7 @@
 }
 @keyframes rotate {
   0%     { --angle: 0deg; }
-  100%   { --angle: 360deg;
-  }
+  100%   { --angle: 360deg;}
 }
 .loginform{
   display: flex;
@@ -210,7 +209,6 @@ div h5 .heading-table{
   .charts{
     height:410px;
     box-shadow: rgba(0, 0, 0, 0.50) 0px 5px 15px;
-    /* border: 1px solid black; */
   }
 
   .table-container {
@@ -241,6 +239,82 @@ div h5 .heading-table{
   .error_msg {
     color: red;
   }
+
+  /* switcher css */
+  .switcher-main {
+    display: flex;
+    justify-content:space-between;
+   
+  }
+
+.parent-toogle {
+  position: relative;
+  margin-left: auto; /* Adjust as needed */
+  left: 100%;
+  top:-20%;
+}
+
+.switch {
+  position: absolute;
+  top:28%;
+  left:0%;
+  right:0%;
+  width: 40px; /* Adjust as needed */
+  height: 20px; /* Adjust as needed */
+  background-color: #ccc;
+  border-radius: 10px;
+  margin-left: 82px;
+  cursor: pointer;
+}
+
+.switch::after {
+  content: '';
+  position: absolute;
+  top: 2px; /* Adjust as needed */
+  left: 2px; /* Adjust as needed */
+  width: 16px; /* Adjust as needed */
+  height: 16px; /* Adjust as needed */
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.3s ease-in-out;
+}
+
+input[type="checkbox"] {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+input[type="checkbox"]:checked + .switch {
+  background-color: #2196F3; /* Adjust as needed */
+}
+
+input[type="checkbox"]:checked + .switch::after {
+  transform: translateX(20px); /* Adjust as needed */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
  
  /* Media Queries */
 

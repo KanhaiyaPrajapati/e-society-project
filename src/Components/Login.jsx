@@ -1,12 +1,12 @@
 import React, { useContext, useRef, useState } from 'react'
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
-import LoginValidation from '../loginvalidation.json'
 import { useNavigate } from 'react-router-dom';
+import LoginValidation from '../loginvalidation.json'
 import axios from "axios";
 import { NumberContext } from './NewContext';
 import Swal from 'sweetalert2';
-import heroimg from '../images/seo.gif'
+import heroimg from '../images/seo.gif';
 
     function Login() {
     const toast = useRef(null);

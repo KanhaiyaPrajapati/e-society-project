@@ -21,8 +21,8 @@ function Users() {
   const [lgShow, setLgShow] = useState(false);
   const [propertyOptions, setPropertyOptions] = useState([]);
   const [viewedUser, setViewedUser] = useState('');
-  let [obj, setobj] = useState({ firstName: '', lastName: '', email: '', phone: '', role: '', propertyId: '' })
-  let [blankobj, setblankobj] = useState({})
+  let   [obj, setobj] = useState({ firstName: '', lastName: '', email: '', phone: '', role: '', propertyId: '' })
+  let   [blankobj, setblankobj] = useState({})
   const [show, setShow] = useState(false);
   const [searchInput, setsearchInput] = useState('')
   let checkAlphabet = /^[a-zA-Z0-9]+$/;
