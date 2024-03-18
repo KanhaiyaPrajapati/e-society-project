@@ -1,10 +1,5 @@
 import axios from "axios";
-import {
-  GETAPI,
-  GETBLOCKAPIDATA,
-  GETBLOCKSAPI,
-  GETPROPERTYID,
-} from "../type/type";
+import {GETAPI,GETBLOCKAPIDATA,GETBLOCKSAPI,GETPROPERTYID} from "../type/type";
 
 let token = JSON.parse(localStorage.getItem("token"));
 const auth = {
@@ -322,16 +317,16 @@ export const DeleteUnitsApiData = (id) => {
 
 // Without async await used then
 export const ViewUnitsApiData = (id, setLgShow, setsingleunit) => {
-  return () =>{
-     try{
-       axios.get(`http://localhost:8000/api/units/${id}`, auth).then((res)=>{
+  return () => {
+    try {
+      axios.get(`http://localhost:8000/api/units/${id}`, auth).then((res) => {
         console.log(res.data);
         setLgShow(true)
         setsingleunit(res.data)
       })
-      }catch (error) { 
+    } catch (error) {
       console.log(error);
-     }
+    }
   }
 }
 

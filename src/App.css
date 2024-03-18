@@ -177,7 +177,7 @@ div h5 .heading-table{
   font-size: 15px;
 
 }
-  .p-toast-message {
+  /* .p-toast-message {
     background-color: rgba(255, 0, 0, 0.5); 
     color: #ffffff; 
     padding: 10px 20px;
@@ -201,7 +201,7 @@ div h5 .heading-table{
     height: 0.4rem !important;
     background:#fb5238 !important;
    
-  }
+  } */
   .box1{
     box-shadow: rgba(0, 0, 0, 0.20) 0px 5px 15px;
   }

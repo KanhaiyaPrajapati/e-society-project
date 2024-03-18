@@ -8,7 +8,7 @@ import { NumberContext } from './NewContext';
 import Swal from 'sweetalert2';
 import heroimg from '../images/seo.gif';
 
-    function Login() {
+    const Login = () => {
     const toast = useRef(null);
     const [obj, setobj] = useState({userNameOrEmail:'',password:''})
     const [blankobj, setblankobj] = useState({})
@@ -17,66 +17,70 @@ import heroimg from '../images/seo.gif';
     const [showerrmsg1, setshowerrmsg1] = useState('')
     const navigate = useNavigate()
 
+    let use = useContext(NumberContext);
     let token = JSON.parse(localStorage.getItem("token"))
     console.log(token);
 
         const getvalue = (e) =>{
-        obj[e.target.name] = e.target.value;
-        blankobj[e.target.name] = '';
-        setblankobj({...blankobj})
-        ValidationFunction(e.target.name)
-    }
-
-    let use = useContext(NumberContext);
-     const SubmitData = async () => {
-        Object.keys(obj).forEach((x) => {
-            ValidationFunction(x);
-        });
-        if (Object.keys(erroMsg).length === 0) {
-            try {
-                 const response = await axios.post('http://localhost:8000/api/user/login', obj);
-                 console.log(response.data);
-                 console.log(response.data.message);
-                
-                 if (response.data.message === 'Login successful') {
-                        setshowerrmsg(response.data.message)  
-                        navigate('/dashboard');
-
-                        localStorage.setItem("item", true);
-					    use.setitem(true);
-                        
-                        let token = response.data.token; 
-                        localStorage.setItem('token',JSON.stringify(token))
-                        console.log(token);
-                } 
-                
-                else {
-                        console.log('Login failed. Message:', response.data.message);
-                       
-                }
-            } catch (error) {
-               console.error(error);
-            //    setshowerrmsg1(error.response.data.message)
-            
-            const Toast = Swal.mixin({
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                  toast.onmouseenter = Swal.stopTimer;
-                  toast.onmouseleave = Swal.resumeTimer;
-                }
-              });
-              Toast.fire({
-                icon: "error",
-                title: "Invalid Username or Password",
-              });
-          
-            }
+                obj[e.target.name] = e.target.value;
+                blankobj[e.target.name] = '';
+                setblankobj({...blankobj})
+                ValidationFunction(e.target.name)
         }
-        setobj({ ...blankobj });
+
+        const SubmitData = async () => {
+            Object.keys(obj).forEach((x) => {
+                ValidationFunction(x);
+            });
+            if (Object.keys(erroMsg).length === 0) {
+                try {
+                    const response = await axios.post('http://localhost:8000/api/user/login', obj);
+                    let loginres = response.data;
+                    let LoginAdminMangerResponse = localStorage.setItem('LoginRes',JSON.stringify(loginres));
+                    console.log(LoginAdminMangerResponse);
+                    console.log(loginres);
+                    console.log(response.data);
+                    console.log(response.data.message);
+                    
+                    if (response.data.message === 'Login successful') {
+                            setshowerrmsg(response.data.message)  
+                            navigate('/dashboard');
+
+                            localStorage.setItem("item", true);
+                            use.setitem(true);
+                            
+                            let token = response.data.token; 
+                            localStorage.setItem('token',JSON.stringify(token))
+                            console.log(token);
+                    } 
+                    
+                    else {
+                        console.log('Login failed. Message:', response.data.message);
+                        
+                    }
+                } catch (error) {
+                console.error(error);
+                //    setshowerrmsg1(error.response.data.message)
+                
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                Toast.fire({
+                    icon: "error",
+                    title: "Invalid Username or Password",
+                });
+            
+                }
+            }
+            setobj({ ...blankobj });
     };
         const ValidationFunction = (name) =>{
         let validationobj = LoginValidation.find((x)=>x.name === name);
@@ -119,4 +123,4 @@ import heroimg from '../images/seo.gif';
    </div>
   )
 }
-export default Login
+export default Login;

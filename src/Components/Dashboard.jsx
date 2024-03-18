@@ -14,12 +14,17 @@ import unitsimg from '../images/home3.png';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import axios from "axios";
+import Swal from 'sweetalert2';
 
 function Dashboard() {
   const [dashboarddata, setdashboarddata] = useState('');
   const [blocks, setblocks] = useState('');
   const [units, setunits] = useState('');
+  const [loggedIn, setLoggedIn] = useState(false);
 
+  let GetLoginAdminMangerResponse = JSON.parse(localStorage.getItem('LoginRes'));
+  console.log(GetLoginAdminMangerResponse.userRole);
+  let condition =GetLoginAdminMangerResponse.userRole;
   let token = JSON.parse(localStorage.getItem('token'));
   console.log(token);
   const auth = {
@@ -64,6 +69,29 @@ function Dashboard() {
         console.log(err.res);
       });
   }, []);
+  
+  useEffect(() => {
+    if(condition === 'Admin' || condition === 'Manager' ){
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+        }
+    });
+    Toast.fire({
+        icon: "success",
+        title: `${condition} Login SuccessFully`,
+    });
+    }
+    else{
+      console.log('User ID password is not Valid');
+    }
+  },[])
 
   const Data = [
     { id: 1, year: 2016, userGain: 80000, userLost: 823 },
