@@ -68,30 +68,81 @@ function Dashboard() {
       .catch((err) => {
         console.log(err.res);
       });
-  }, []);
+  },[]);
   
-  useEffect(() => {
-    if(condition === 'Admin' || condition === 'Manager' ){
-      const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-        toast.onmouseenter = Swal.stopTimer;
-        toast.onmouseleave = Swal.resumeTimer;
+  // useEffect(() => {
+  //   if(condition === 'Admin' || condition === 'Manager' ){
+  //     const Toast = Swal.mixin({
+  //       toast: true,
+  //       position: 'top-end',
+  //       showConfirmButton: false,
+  //       timer: 3000,
+  //       timerProgressBar: true,
+  //       didOpen: (toast) => {
+  //       toast.onmouseenter = Swal.stopTimer;
+  //       toast.onmouseleave = Swal.resumeTimer;
+  //       }
+  //   });
+  //   Toast.fire({
+  //       icon: "success",
+  //       title: `${condition} Login SuccessFully`,
+  //   });
+  //   }
+  //   else{
+  //     console.log('User ID password is not Valid');
+  //   }
+  // },[])
+
+  // useEffect(() => {
+  //   if (condition === 'Admin' || condition === 'Manager') {
+  //     if (!loggedIn) {
+  //       const Toast = Swal.mixin({
+  //         toast: true,
+  //         position: 'top-end',
+  //         showConfirmButton: false,
+  //         timer: 3000,
+  //         timerProgressBar: true,
+  //         didOpen: (toast) => {
+  //           toast.onmouseenter = Swal.stopTimer;
+  //           toast.onmouseleave = Swal.resumeTimer;
+  //         }
+  //       });
+  //       Toast.fire({
+  //         icon: "success",
+  //         title: `${condition} Login SuccessFully`,
+  //       });
+  //       setLoggedIn(true);
+  //     }
+  //   } else {
+  //     console.log('User ID password is not Valid');
+  //   }
+  // }, [loggedIn, condition]);
+
+  // IIFE Function
+  (function(){
+    if (condition === 'Admin' || condition === 'Manager') {
+          if (!loggedIn) {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+              }
+            });
+            Toast.fire({
+              icon: "success",
+              title: `${condition} Login SuccessFully`,
+            });
+            setLoggedIn(true);
+          }
+        } else {
+          console.log('User ID password is not Valid');
         }
-    });
-    Toast.fire({
-        icon: "success",
-        title: `${condition} Login SuccessFully`,
-    });
-    }
-    else{
-      console.log('User ID password is not Valid');
-    }
-  },[])
+  })();
 
   const Data = [
     { id: 1, year: 2016, userGain: 80000, userLost: 823 },
@@ -121,10 +172,10 @@ function Dashboard() {
       borderWidth: 1.5
     }]
   });
-
+  
   useEffect(() => {
-    AOS.init({ duration: 2500 });
-  }, []);
+    AOS.init({ duration: 3000});
+  },[]);
 
   return (
     <>

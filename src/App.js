@@ -11,6 +11,7 @@ import { PropertgetApi, getBlockApi, getUnitsapi, getapi } from './Redux/action/
 import Dashboard from './Components/Dashboard';
 import Blocks from './Components/Blocks';
 import Units from './Components/Units';
+import ManagerUser from './Components/ManagerUser';
 
 function App() {
 let [item, setitem] = useState(false)
@@ -45,7 +46,7 @@ return (
           <>
           <Route path='/' element={<Navigate to='/dashboard' />} />
           <Route path ='/dashboard' element={<Dashboard/>} />
-          <Route path ='/user' element={<Users/>} />
+          <Route path ='/user' element={<Users/>}></Route>
           <Route path ='/properties' element={<Properties/>} />
           <Route path='/blocks' element = {<Blocks/> } />
           <Route path='/units' element={<Units/>}/>

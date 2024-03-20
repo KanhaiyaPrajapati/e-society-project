@@ -108,7 +108,7 @@ import heroimg from '../images/seo.gif';
             <h5 className='mt-2  error_msg text-danger'>{erroMsg?.userNameOrEmail}</h5>
         </FloatingLabel>
         <FloatingLabel controlId="floatingPassword" label="Password" className='mt-5 mb-4'>
-            <Form.Control type="password"  className='' name ='password' value={obj.password} onChange={getvalue} />
+            <Form.Control type="password" name ='password' value={obj.password} onChange={getvalue} />
             <h5 className='mt-2  error_msg text-danger'>{erroMsg?.password}</h5>
             <h5 className='text-center text-danger '>{showerrmsg}</h5>
             <h5 className='text-center text-danger '>{showerrmsg1}</h5>

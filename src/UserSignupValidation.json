@@ -76,5 +76,32 @@
                 "error": "propertyId is Required"
             }
         ]
+    },
+    {
+        "name": "blockId",
+        "conditions": [
+            {
+                "condition": "obj.blockId == undefined || obj.blockId == ''",
+                "error": "blockId is Required"
+            }
+        ]
+    },
+    {
+        "name": "unitId",
+        "conditions": [
+            {
+                "condition": "obj.unitId == undefined || obj.unitId == ''",
+                "error": "unitId is Required"
+            }
+        ]
+    },
+    {
+        "name": "managerId",
+        "conditions": [
+            {
+                "condition": "obj.managerId == undefined || obj.managerId == ''",
+                "error": "managerId is Required"
+            }
+        ]
     }
 ]

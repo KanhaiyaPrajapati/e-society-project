@@ -9,19 +9,15 @@ import Dashboardiconpng from '../images/dashboard4.png';
 import users from '../images/users.png';
 import Property from '../images/Property.png';
 import Home from '../images/homeLogo6.png';
-import Swal from 'sweetalert2';
-
 
 
 export const Hoc = (Component) => {
   const NewComponent = () => {
-    const toast = useRef(null);
+  const toast = useRef(null);
 
     let GetLoginAdminMangerResponse = JSON.parse(localStorage.getItem('LoginRes'));
     console.log(GetLoginAdminMangerResponse.userRole);
-    let condition =GetLoginAdminMangerResponse.userRole;
-   
-
+    
     let use = useContext(NumberContext);
     console.log(use);
 
@@ -30,10 +26,7 @@ export const Hoc = (Component) => {
        use.setitem(use.item);
 
     }
-
-   
-    
-    return <div className="d-flex">
+  return <div className="d-flex">
       <div className="sidebar">
         <div className="text-center py-3">
           {/* <DiamondIcon className="text-white" style={{ fontSize: '70px' }} /> */}
@@ -50,17 +43,17 @@ export const Hoc = (Component) => {
       </div>
       <div className="header">
         <div className=" d-flex justify-content-between">
-          <div className='px-5 py-3 fs-3'>Admin Panel</div>
+          <div className='px-5 py-3 fs-3'>{GetLoginAdminMangerResponse.userRole} Panel</div>
           <div>
             <div className="d-flex px-2 py-3  gap-3 me-5">
               <h2 className=""><SearchIcon /></h2>
               <h2><AddAlertIcon /></h2>
               <img src={userimg} alt="" width={30} height={30} className="mt-2" />
 
-              <select name="" id="" style={{ textDecoration: 'none' }} className="form-select ">
+              <select name="" id="" style={{ textDecoration: 'none' }} className="form-select getswitched">
                 <option value="userRole" className='px-2 py-2'>{GetLoginAdminMangerResponse.userRole}</option>
               </select>
-          </div>
+            </div>
           </div>
         </div>
         <div>

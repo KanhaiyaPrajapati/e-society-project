@@ -14,7 +14,7 @@ console.log(auth);
 export const getapi = () => {
   return (dispatch) => {
     axios
-      .get("http://localhost:8000/api/user/", auth)
+      .get(`http://localhost:8000/api/user/`, auth)
       .then((res) => {
         dispatch({ type: GETAPI, data: res.data });
       })
@@ -329,6 +329,38 @@ export const ViewUnitsApiData = (id, setLgShow, setsingleunit) => {
     }
   }
 }
+
+// ===================================== Manager Handler Api Starts From Here =======================================
+
+ export const AddMAnagerAPiData = (obj,auth) =>{
+    return async(dispatch) =>{
+      try {
+        let res = await axios.post(`http://localhost:8000/api/user/manager-create`,obj,auth);
+        console.log(res.data.user); 
+        console.log(res.user);
+        } catch (error) {
+        console.log(error);
+      }
+    }
+ } 
+
+//  export const GetManagerApiData = (obj,auth) =>{
+//   return async (dispatch) =>{
+//     try { 
+//       let res = await axios.get(`http://localhost:8000/api/user/${obj.id}`,auth);
+//       console.log(res.data);
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   }
+//  }
+
+
+
+
+
+ 
+//  ==========================================================================================================
 
 
 

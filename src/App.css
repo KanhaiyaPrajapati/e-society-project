@@ -1,6 +1,10 @@
 *{
-  font-family: "Urbanist", sans-serif;
+  /* font-family: "Urbanist", sans-serif;
   font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal; */
+  /* second Fonts */
+  font-family: "Fira Sans Extra Condensed", sans-serif;
   font-weight: 700;
   font-style: normal;
 }
@@ -291,6 +295,10 @@ input[type="checkbox"]:checked + .switch {
 
 input[type="checkbox"]:checked + .switch::after {
   transform: translateX(20px); /* Adjust as needed */
+}
+
+.getswitched:hover{
+  cursor: pointer;
 }
 
 
