@@ -8,7 +8,7 @@ import Modal from 'react-bootstrap/Modal';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { useDispatch, useSelector } from "react-redux";
-import { AddMAnagerAPiData, DeleteApidata, EditApiData, UpdateManagerApiData, ViewApiData, addapidata, getapi } from "../Redux/action/action";
+import { AddMAnagerAPiData, DeleteApidata, DeleteManagerApiData, EditApiData, UpdateManagerApiData, ViewApiData, addapidata, getapi } from "../Redux/action/action";
 import Swal from "sweetalert2";
 import UsersignupValidation from '../UserSignupValidation.json'
 import axios from "axios";
@@ -38,6 +38,10 @@ function Users() {
   let state = useSelector((state) => state.api)
   console.log(state);
 
+
+  let state1 = useSelector((state) => state.ManagerApi);
+  console.log(state1);
+
   let token = JSON.parse(localStorage.getItem('token'));
   console.log(token);
 
@@ -50,11 +54,16 @@ function Users() {
     setsearchInput(e.target.value)
   }
 
-  const filteredData = state.filter((user) =>
+  const filteredDataForAdminUser = state.filter((user) =>
+    user.userName.toLowerCase().includes(searchInput.toLowerCase())
+  );
+
+
+  const filteredDataForManagerUser = state1.filter((user) =>
     user.firstName.toLowerCase().includes(searchInput.toLowerCase())
   );
 
-  const auth = {
+    const auth = {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -72,27 +81,6 @@ function Users() {
     }
     fecthingdata()
   }, [])
-
-
-  useEffect(() => {
-    const getManagerallapidata = async () => {
-      try {
-        let res = await axios.get(`http://localhost:8000/api/user/`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: 'application/json',
-            managerId: 2,
-          }
-        });
-        console.log(res.data);
-        setShowManagerdata(res.data)
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    getManagerallapidata()
-  }, [])
-
 
   useEffect(() => {
     AOS.init({
@@ -219,6 +207,29 @@ function Users() {
     setobj({ ...obj })
     handleShow()
   }
+
+
+  let deleteManagerData = (id, auth) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to Delete!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your file has been deleted.",
+          icon: "success"
+        });
+        dispatch(DeleteManagerApiData(id, auth))
+      }
+    });
+  }
+
   //============================================ Function End for Manager Panel =====================================
 
   const userRole = obj.role;
@@ -299,7 +310,7 @@ function Users() {
             </div>
           </div>
 
-          <DataTable className="datatable px-3 py-3 text-dark" value={filteredData} paginator rows={5} rowsPerPageOptions={[3, 5, 10, 25, 50]} tableStyle={{ minWidth: '20rem' }}>
+          <DataTable className="datatable px-3 py-3 text-dark" value={filteredDataForAdminUser} paginator rows={5} rowsPerPageOptions={[3, 5, 10, 25, 50]} tableStyle={{ minWidth: '20rem' }}>
             {/* Admin Table Columns */}
             <Column field="id" header="ID" style={{ width: '10%' }}></Column>
             <Column field="userName" header="User Name" style={{ width: '20%' }}></Column>
@@ -448,7 +459,7 @@ function Users() {
               </Modal>
             </div>
           </div>
-          <DataTable className="datatable px-3 py-3 text-dark" value={ShowManagerdata} paginator rows={5} rowsPerPageOptions={[3, 5, 10, 25, 50]} tableStyle={{ minWidth: '20rem' }}>
+          <DataTable className="datatable px-3 py-3 text-dark" value={filteredDataForManagerUser} paginator rows={5} rowsPerPageOptions={[3, 5, 10, 25, 50]} tableStyle={{ minWidth: '20rem' }}>
             {/* Manager Table Columns */}
             <Column field="id" header="ID" style={{ width: '5%' }}></Column>
             <Column field="firstName" header="FirstName" style={{ width: '10%' }}></Column>
@@ -464,7 +475,7 @@ function Users() {
             <Column header="ACTIONS" style={{ width: '10%' }} body={(rowData) => (
               <div>
                 <EditIcon className="text-primary" style={{ cursor: 'pointer' }} onClick={() => EditManagerData(rowData)} />
-                <DeleteForeverIcon className="text-danger ms-2" style={{ cursor: 'pointer' }} onClick={() => deleteData(rowData.id)} />
+                <DeleteForeverIcon className="text-danger ms-2" style={{ cursor: 'pointer' }} onClick={() => deleteManagerData(rowData.id)} />
                 <VisibilityIcon className="ms-2" style={{ cursor: 'pointer' }} onClick={() => viewdata(rowData.id)}></VisibilityIcon>
               </div>
             )}>

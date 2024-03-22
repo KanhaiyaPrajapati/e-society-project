@@ -1,5 +1,5 @@
 import axios from "axios";
-import {GETAPI,GETBLOCKAPIDATA,GETBLOCKSAPI,GETPROPERTYID} from "../type/type";
+import { GETAPI, GETBLOCKAPIDATA, GETBLOCKSAPI, GETMANAGERAPIDATA, GETPROPERTYID } from "../type/type";
 
 let token = JSON.parse(localStorage.getItem("token"));
 const auth = {
@@ -15,9 +15,9 @@ export const getapi = () => {
   return (dispatch) => {
     axios
       .get(`http://localhost:8000/api/user/`, {
-        headers:{
-          Authorization:`Bearer ${token}`,
-          Accept:'application/json',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
           managerId: 1,
         }
       })
@@ -337,45 +337,71 @@ export const ViewUnitsApiData = (id, setLgShow, setsingleunit) => {
   }
 }
 
-  //--------------------------------------------- UnitsApis Ends  Here ------------------------------------------------
+//--------------------------------------------- UnitsApis Ends  Here ------------------------------------------------
 
 // ===================================== Manager Handler Api Starts From Here ===========================
 
 
-
-
- export const AddMAnagerAPiData = (obj,auth) =>{
-    return async(dispatch) =>{
-      try {
-        let res = await axios.post(`http://localhost:8000/api/user/manager-create`,obj,auth);
-        console.log(res.data.user); 
-        console.log(res.user); 
-        dispatch(getapi(auth))
-        } catch (error) {
-        console.log(error);
-      }
-    }
- } 
-
-
-
- export const UpdateManagerApiData = (obj,auth) =>{
-  return async () =>{
+export const getManagerallapidata = () => {
+  return async (dispatch) => {
     try {
-      let res = await axios.put(`http://localhost:8000/api/user/managerupdate/${obj.id}`,obj,auth);
+      let res = await axios.get(`http://localhost:8000/api/user/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+          managerId: 5,
+        }
+      });
       console.log(res.data);
+      dispatch({ type: GETMANAGERAPIDATA, data: res.data })
+
     } catch (error) {
       console.log(error);
     }
   }
- }
- 
+}
+
+export const AddMAnagerAPiData = (obj, auth, getManagerallapidata) => {
+  return async (dispatch) => {
+    try {
+      let res = await axios.post(`http://localhost:8000/api/user/manager-create`, obj, auth);
+      console.log(res.data.user);
+      console.log(res.user);
+      dispatch(getManagerallapidata())
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
+
+export const UpdateManagerApiData = (obj, auth) => {
+  return async (dispatch) => {
+    try {
+      let res = await axios.put(`http://localhost:8000/api/user/managerupdate/${obj.id}`, obj, auth);
+      console.log(res.data);
+      dispatch(getManagerallapidata(auth))
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
 
 
 
+export const DeleteManagerApiData = (id) => {
+  return async (dispatch) => {
+    try {
+      let res = await axios.delete(`http://localhost:8000/api/user/${id}`, auth);
+      console.log(res.data);
+      dispatch(getManagerallapidata(auth))
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
 
- 
- // ===================================== Manager Handler Api Ends From Here =======================================
+
+// ===================================== Manager Handler Api Ends From Here =======================================
 
 
 
