@@ -9,12 +9,18 @@ const auth = {
 };
 console.log(auth);
 
-//------------------------------ UsersApis Starts Here -----------------------------------------------
+//----------------------------------------------------------- UsersApis Starts Here -----------------------------------------------
 
 export const getapi = () => {
   return (dispatch) => {
     axios
-      .get(`http://localhost:8000/api/user/`, auth)
+      .get(`http://localhost:8000/api/user/`, {
+        headers:{
+          Authorization:`Bearer ${token}`,
+          Accept:'application/json',
+          managerId: 1,
+        }
+      })
       .then((res) => {
         dispatch({ type: GETAPI, data: res.data });
       })
@@ -316,6 +322,7 @@ export const DeleteUnitsApiData = (id) => {
 // };
 
 // Without async await used then
+
 export const ViewUnitsApiData = (id, setLgShow, setsingleunit) => {
   return () => {
     try {
@@ -330,37 +337,45 @@ export const ViewUnitsApiData = (id, setLgShow, setsingleunit) => {
   }
 }
 
-// ===================================== Manager Handler Api Starts From Here =======================================
+  //--------------------------------------------- UnitsApis Ends  Here ------------------------------------------------
+
+// ===================================== Manager Handler Api Starts From Here ===========================
+
+
+
 
  export const AddMAnagerAPiData = (obj,auth) =>{
     return async(dispatch) =>{
       try {
         let res = await axios.post(`http://localhost:8000/api/user/manager-create`,obj,auth);
         console.log(res.data.user); 
-        console.log(res.user);
+        console.log(res.user); 
+        dispatch(getapi(auth))
         } catch (error) {
         console.log(error);
       }
     }
  } 
 
-//  export const GetManagerApiData = (obj,auth) =>{
-//   return async (dispatch) =>{
-//     try { 
-//       let res = await axios.get(`http://localhost:8000/api/user/${obj.id}`,auth);
-//       console.log(res.data);
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   }
-//  }
 
+
+ export const UpdateManagerApiData = (obj,auth) =>{
+  return async () =>{
+    try {
+      let res = await axios.put(`http://localhost:8000/api/user/managerupdate/${obj.id}`,obj,auth);
+      console.log(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+ }
+ 
 
 
 
 
  
-//  ==========================================================================================================
+ // ===================================== Manager Handler Api Ends From Here =======================================
 
 
 

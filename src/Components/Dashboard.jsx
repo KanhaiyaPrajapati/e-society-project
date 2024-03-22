@@ -24,7 +24,7 @@ function Dashboard() {
 
   let GetLoginAdminMangerResponse = JSON.parse(localStorage.getItem('LoginRes'));
   console.log(GetLoginAdminMangerResponse.userRole);
-  let condition =GetLoginAdminMangerResponse.userRole;
+  let condition = GetLoginAdminMangerResponse.userRole;
   let token = JSON.parse(localStorage.getItem('token'));
   console.log(token);
   const auth = {
@@ -126,7 +126,7 @@ function Dashboard() {
               toast: true,
               position: 'top-end',
               showConfirmButton: false,
-              timer: 3000,
+              timer: 1000,
               timerProgressBar: true,
               didOpen: (toast) => {
                 toast.onmouseenter = Swal.stopTimer;

@@ -8,7 +8,7 @@ import Modal from 'react-bootstrap/Modal';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { useDispatch, useSelector } from "react-redux";
-import { AddMAnagerAPiData, DeleteApidata, EditApiData, ViewApiData, addapidata, getapi } from "../Redux/action/action";
+import { AddMAnagerAPiData, DeleteApidata, EditApiData, UpdateManagerApiData, ViewApiData, addapidata, getapi } from "../Redux/action/action";
 import Swal from "sweetalert2";
 import UsersignupValidation from '../UserSignupValidation.json'
 import axios from "axios";
@@ -21,29 +21,27 @@ function Users() {
   const [lgShow, setLgShow] = useState(false);
   const [propertyOptions, setPropertyOptions] = useState([]);
   const [viewedUser, setViewedUser] = useState('');
-  let   [obj, setobj] = useState({ firstName: '', lastName: '', email: '', phone: '', role: '', propertyId: '',blockId:'',unitId:'',managerId:'' })
-  let   [blankobj, setblankobj] = useState({})
+  let [obj, setobj] = useState({ firstName: '', lastName: '', email: '', phone: '', role: '', propertyId: '', blockId: '', unitId: '', managerId: '' })
+  let [blankobj, setblankobj] = useState({})
   const [show, setShow] = useState(false);
   const [searchInput, setsearchInput] = useState('')
   let checkAlphabet = /^[a-zA-Z0-9]+$/;
   const [errorMsg, seterrorMsg] = useState({})
-
-
+  const [ShowManagerdata, setShowManagerdata] = useState('');
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   console.log(viewedUser);
+  let dispatch = useDispatch()
 
   let state = useSelector((state) => state.api)
-  let dispatch = useDispatch()
   console.log(state);
 
   let token = JSON.parse(localStorage.getItem('token'));
   console.log(token);
 
   let GetLoginAdminMangerResponse = JSON.parse(localStorage.getItem('LoginRes'));
-  // console.log(GetLoginAdminMangerResponse.userRole);
   let condition = GetLoginAdminMangerResponse.userRole;
   console.log(condition);
 
@@ -53,7 +51,7 @@ function Users() {
   }
 
   const filteredData = state.filter((user) =>
-    user.userName.toLowerCase().includes(searchInput.toLowerCase())
+    user.firstName.toLowerCase().includes(searchInput.toLowerCase())
   );
 
   const auth = {
@@ -62,7 +60,7 @@ function Users() {
     }
   };
 
-useEffect(() => {
+  useEffect(() => {
     const fecthingdata = async () => {
       try {
         const Response = await axios.get('http://localhost:8000/api/property/available/property', auth);
@@ -75,11 +73,34 @@ useEffect(() => {
     fecthingdata()
   }, [])
 
+
+  useEffect(() => {
+    const getManagerallapidata = async () => {
+      try {
+        let res = await axios.get(`http://localhost:8000/api/user/`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: 'application/json',
+            managerId: 2,
+          }
+        });
+        console.log(res.data);
+        setShowManagerdata(res.data)
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getManagerallapidata()
+  }, [])
+
+
   useEffect(() => {
     AOS.init({
       duration: 2000
     });
   }, [])
+
+  // Error Handling Function
 
   let ValidationFunction = (name) => {
     let validationobj = UsersignupValidation.find((x) => x.name === name)
@@ -92,6 +113,8 @@ useEffect(() => {
     }
     seterrorMsg({ ...errorMsg })
   }
+
+  // Get Value Function
 
   const getvalue = (e) => {
     if (e.target.type === 'propertyId') {
@@ -107,7 +130,8 @@ useEffect(() => {
     setblankobj({ ...blankobj })
     ValidationFunction(e.target.name)
   }
-//======================================== SubmitData Function for Admin Panel =============================
+  //======================================== Function for Admin Panel =============================
+
   let SubmitAdminData = async () => {
     await Promise.all(Object.keys(obj).map(async (x) => {
       await ValidationFunction(x);
@@ -125,33 +149,10 @@ useEffect(() => {
         showConfirmButton: false,
         timer: 2500
       });
-      setobj({ ...blankobj});
+      setobj({ ...blankobj });
       handleClose();
     }
   };
-  //======================================== SubmitData Function for Manager Panel =============================
-
-  let SubmitManagerData = async () => {
-    await Promise.all(Object.keys(obj).map(async (x) => {
-      await ValidationFunction(x);
-    }));
-    if (Object.keys(errorMsg).length === 0) {
-      dispatch(AddMAnagerAPiData(obj,auth))
-      Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'Your work has been saved',
-        showConfirmButton: false,
-        timer: 2500
-      });
-      console.log(obj);
-      setobj({ ...blankobj});
-      handleClose();
-    }
-  };
-
-
-//========================================SubmitData Function End for Manager Panel =============================
 
 
   const deleteData = (id) => {
@@ -186,12 +187,45 @@ useEffect(() => {
   const viewdata = (id) => {
     dispatch(ViewApiData(id, setLgShow, setViewedUser))
   };
-  const userRole = obj.role; // Assuming you have the user's role stored somewhere
+
+
+  //============================================== Function for Manager Panel =============================
+
+  let SubmitManagerData = async () => {
+    await Promise.all(Object.keys(obj).map(async (x) => {
+      await ValidationFunction(x);
+    }));
+    if (Object.keys(errorMsg).length === 0) {
+      if (obj.id === undefined) {
+        dispatch(AddMAnagerAPiData(obj, auth))
+      } else {
+        dispatch(UpdateManagerApiData(obj, auth));
+      }
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Your work has been saved',
+        showConfirmButton: false,
+        timer: 2500
+      });
+      setobj({ ...blankobj });
+      handleClose();
+    }
+  };
+
+  let EditManagerData = (obj) => {
+    obj = ({ ...obj })
+    console.log(obj);
+    setobj({ ...obj })
+    handleShow()
+  }
+  //============================================ Function End for Manager Panel =====================================
+
+  const userRole = obj.role;
 
   return (
     <>
-
-
+      {/*============================================ Admin Table and Form ============================================= */}
       {condition === 'Admin' && (
         // Render Admin Table and Form
         <div className="shadow-lg mx-auto mt-5 border border-warning" style={{ width: "90%" }} data-aos='zoom-in-up' >
@@ -283,44 +317,44 @@ useEffect(() => {
             </Column>
           </DataTable>
           <Modal
-          size="lg"
-          show={lgShow}
-          onHide={() => setLgShow(false)}
-          aria-labelledby="example-modal-sizes-title-sm">
-          <Modal.Header closeButton>
-            <Modal.Title id="example-modal-sizes-title-sm">
-              User Details
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <div className="d-flex justify-content-between px-5 py-3 gap-3 main-container mt-3">
-              <div className="table heading-table">
-                <h5 style={{ color: '#f30a49' }}>Property ID</h5>
-                <h5 style={{ color: '#f30a49' }} className="mt-4">FirstName</h5>
-                <h5 style={{ color: '#f30a49' }} className="mt-4">LastName</h5>
-                <h5 style={{ color: '#f30a49' }} className="mt-4">Email</h5>
-                <h5 style={{ color: '#f30a49' }} className="mt-4">Phone</h5>
-                <h5 style={{ color: '#f30a49' }} className="mt-4">Role</h5>
+            size="lg"
+            show={lgShow}
+            onHide={() => setLgShow(false)}
+            aria-labelledby="example-modal-sizes-title-sm">
+            <Modal.Header closeButton>
+              <Modal.Title id="example-modal-sizes-title-sm">
+                User Details
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <div className="d-flex justify-content-between px-5 py-3 gap-3 main-container mt-3">
+                <div className="table heading-table">
+                  <h5 style={{ color: '#f30a49' }}>Property ID</h5>
+                  <h5 style={{ color: '#f30a49' }} className="mt-4">FirstName</h5>
+                  <h5 style={{ color: '#f30a49' }} className="mt-4">LastName</h5>
+                  <h5 style={{ color: '#f30a49' }} className="mt-4">Email</h5>
+                  <h5 style={{ color: '#f30a49' }} className="mt-4">Phone</h5>
+                  <h5 style={{ color: '#f30a49' }} className="mt-4">Role</h5>
+                </div>
+                <div>
+                  <h5>{viewedUser.propertyId}</h5>
+                  <h5 style={{ color: '#090030' }} className="mt-4">{viewedUser.firstName}</h5>
+                  <h5 style={{ color: '#090030' }} className="mt-4">{viewedUser.lastName}</h5>
+                  <h5 style={{ color: '#090030' }} className="mt-4">{viewedUser.email}</h5>
+                  <h5 style={{ color: '#090030' }} className="mt-4">{viewedUser.phone}</h5>
+                  <h5 style={{ color: '#090030' }} className="mt-4">{viewedUser.role}</h5>
+                </div>
               </div>
-              <div>
-                <h5>{viewedUser.propertyId}</h5>
-                <h5 style={{ color: '#090030' }} className="mt-4">{viewedUser.firstName}</h5>
-                <h5 style={{ color: '#090030' }} className="mt-4">{viewedUser.lastName}</h5>
-                <h5 style={{ color: '#090030' }} className="mt-4">{viewedUser.email}</h5>
-                <h5 style={{ color: '#090030' }} className="mt-4">{viewedUser.phone}</h5>
-                <h5 style={{ color: '#090030' }} className="mt-4">{viewedUser.role}</h5>
-              </div>
-            </div>
-          </Modal.Body>
-        </Modal>
-      </div>
+            </Modal.Body>
+          </Modal>
+        </div>
       )}
 
 
 
+
+
       {/*============================================ Manager Table and Form ============================================= */}
-
-
 
 
       {condition === 'Manager' && (
@@ -328,7 +362,7 @@ useEffect(() => {
         <div className="shadow-lg mx-auto mt-5 border border-warning" style={{ width: "90%" }} data-aos='zoom-in-up' >
           <div className=" d-flex justify-content-between px-1 py-3 lx " >
             <div>
-              <h4 className="ms-3 ">Users<span className="ms-2">{state.length}</span></h4>
+              <h4 className="ms-3 ">Users</h4>
             </div>
             <div className="px-5 d-flex ">
               <input type="text" className="form-control rounded text-center me-3" placeholder="Search" style={{ width: "120px" }} onChange={handleSearchInputChange} />
@@ -373,33 +407,33 @@ useEffect(() => {
                     </div>
 
                     <div className="mt-1">
-                    <select name="propertyId" id="" className="form-select" onChange={getvalue} value={obj.propertyId}  >
-                      <option value="">-Properties-</option>
-                      {
-                        propertyOptions.map((x) => {
-                          return <option key={x.id} value={x.id}>
-                            {x.id}
-                          </option>
-                        })
-                      }
-                    </select>
-                    <span className='text-center error_msg ms-2'>{errorMsg?.propertyId}</span>
-                  </div>
+                      <select name="propertyId" id="" className="form-select" onChange={getvalue} value={obj.propertyId}  >
+                        <option value="">-Properties-</option>
+                        {
+                          propertyOptions.map((x) => {
+                            return <option key={x.id} value={x.id}>
+                              {x.id}
+                            </option>
+                          })
+                        }
+                      </select>
+                      <span className='text-center error_msg ms-2'>{errorMsg?.propertyId}</span>
+                    </div>
 
-                  <div className="mt-1">
+                    <div className="mt-1">
                       <input type="number" name="blockId" id="" placeholder="blockId" className="form-control" onChange={getvalue} value={obj.blockId} />
                       <span className='text-center error_msg ms-2'>{errorMsg?.blockId}</span>
-                  </div>
+                    </div>
 
-                  <div className="mt-1">
+                    <div className="mt-1">
                       <input type="number" name="unitId" id="" placeholder="unitId" className="form-control" onChange={getvalue} value={obj.unitId} />
                       <span className='text-center error_msg ms-2'>{errorMsg?.unitId}</span>
-                  </div>
+                    </div>
 
-                  <div className="mt-1">
+                    <div className="mt-1">
                       <input type="number" name="managerId" id="" placeholder="managerId" className="form-control" onChange={getvalue} value={obj.managerId} />
                       <span className='text-center error_msg ms-2'>{errorMsg?.managerId}</span>
-                  </div>
+                    </div>
 
                   </form>
                 </Modal.Body>
@@ -414,22 +448,22 @@ useEffect(() => {
               </Modal>
             </div>
           </div>
-         <DataTable className="datatable px-3 py-3 text-dark" value={filteredData} paginator rows={5} rowsPerPageOptions={[3, 5, 10, 25, 50]} tableStyle={{ minWidth: '20rem' }}>
+          <DataTable className="datatable px-3 py-3 text-dark" value={ShowManagerdata} paginator rows={5} rowsPerPageOptions={[3, 5, 10, 25, 50]} tableStyle={{ minWidth: '20rem' }}>
             {/* Manager Table Columns */}
             <Column field="id" header="ID" style={{ width: '5%' }}></Column>
-            <Column field="firstName" header="User Name" style={{ width: '10%' }}></Column>
-            <Column field="lastName" header="Email" style={{ width: '10%' }}></Column>
-            <Column field="email" header="PHONE" style={{ width: '10%' }}></Column>
+            <Column field="firstName" header="FirstName" style={{ width: '10%' }}></Column>
+            <Column field="lastName" header="LastName" style={{ width: '10%' }}></Column>
+            <Column field="email" header="Email" style={{ width: '10%' }}></Column>
             <Column field="phone" header="PHONE" style={{ width: '10%' }}></Column>
             <Column field="role" header="ROLE" style={{ width: '10%' }}></Column>
-            <Column field="propertyId" header="propertyId" style={{ width: '7%' }}></Column>
-            <Column field="blockId" header="blockId" style={{ width: '5%' }}></Column>
-            <Column field="unitId" header="unitId" style={{ width: '5%' }}></Column>
-            <Column field="managerId" header="managerId" style={{ width: '7%' }}></Column>
+            <Column field="propertyId" header="PropertyId" style={{ width: '7%' }}></Column>
+            <Column field="blockId" header="BlockId" style={{ width: '5%' }}></Column>
+            <Column field="unitId" header="UnitId" style={{ width: '5%' }}></Column>
+            <Column field="managerId" header="ManagerId" style={{ width: '7%' }}></Column>
             {/* <Column field="propertyId" header="PropId" style={{ width: '10%' }}></Column> */}
             <Column header="ACTIONS" style={{ width: '10%' }} body={(rowData) => (
               <div>
-                <EditIcon className="text-primary" style={{ cursor: 'pointer' }} onClick={() => Editdata(rowData)} />
+                <EditIcon className="text-primary" style={{ cursor: 'pointer' }} onClick={() => EditManagerData(rowData)} />
                 <DeleteForeverIcon className="text-danger ms-2" style={{ cursor: 'pointer' }} onClick={() => deleteData(rowData.id)} />
                 <VisibilityIcon className="ms-2" style={{ cursor: 'pointer' }} onClick={() => viewdata(rowData.id)}></VisibilityIcon>
               </div>
@@ -437,38 +471,46 @@ useEffect(() => {
             </Column>
           </DataTable>
           <Modal
-          size="lg"
-          show={lgShow}
-          onHide={() => setLgShow(false)}
-          aria-labelledby="example-modal-sizes-title-sm">
-          <Modal.Header closeButton>
-            <Modal.Title id="example-modal-sizes-title-sm">
-              User Details
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <div className="d-flex justify-content-between px-5 py-3 gap-3 main-container mt-3">
-              <div className="table heading-table">
-                <h5 style={{ color: '#f30a49' }}>Property ID</h5>
-                <h5 style={{ color: '#f30a49' }} className="mt-4">FirstName</h5>
-                <h5 style={{ color: '#f30a49' }} className="mt-4">LastName</h5>
-                <h5 style={{ color: '#f30a49' }} className="mt-4">Email</h5>
-                <h5 style={{ color: '#f30a49' }} className="mt-4">Phone</h5>
-                <h5 style={{ color: '#f30a49' }} className="mt-4">Role</h5>
+            size="lg"
+            show={lgShow}
+            onHide={() => setLgShow(false)}
+            aria-labelledby="example-modal-sizes-title-sm">
+            <Modal.Header closeButton>
+              <Modal.Title id="example-modal-sizes-title-sm">
+                User Details
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <div className="d-flex justify-content-between px-5 py-3 gap-3 main-container mt-3">
+                <div className="table heading-table">
+                  <h5 style={{ color: '#f30a49' }}>Property ID</h5>
+                  <h5 style={{ color: '#f30a49' }} className="mt-4">FirstName</h5>
+                  <h5 style={{ color: '#f30a49' }} className="mt-4">LastName</h5>
+                  <h5 style={{ color: '#f30a49' }} className="mt-4">Email</h5>
+                  <h5 style={{ color: '#f30a49' }} className="mt-4">Phone</h5>
+                  <h5 style={{ color: '#f30a49' }} className="mt-4">Role</h5>
+                  <h5 style={{ color: '#f30a49' }} className="mt-4">PropertyId</h5>
+                  <h5 style={{ color: '#f30a49' }} className="mt-4">BlockId</h5>
+                  <h5 style={{ color: '#f30a49' }} className="mt-4">UnitId</h5>
+                  <h5 style={{ color: '#f30a49' }} className="mt-4">ManagerId</h5>
+                </div>
+                <div>
+                  <h5>{viewedUser.propertyId}</h5>
+                  <h5 style={{ color: '#090030' }} className="mt-4">{viewedUser.firstName}</h5>
+                  <h5 style={{ color: '#090030' }} className="mt-4">{viewedUser.lastName}</h5>
+                  <h5 style={{ color: '#090030' }} className="mt-4">{viewedUser.email}</h5>
+                  <h5 style={{ color: '#090030' }} className="mt-4">{viewedUser.phone}</h5>
+                  <h5 style={{ color: '#090030' }} className="mt-4">{viewedUser.role}</h5>
+                  <h5 style={{ color: '#090030' }} className="mt-4">{viewedUser.propertyId}</h5>
+                  <h5 style={{ color: '#090030' }} className="mt-4">{viewedUser.blockId}</h5>
+                  <h5 style={{ color: '#090030' }} className="mt-4">{viewedUser.unitId}</h5>
+                  <h5 style={{ color: '#090030' }} className="mt-4">{viewedUser.managerId}</h5>
+                </div>
               </div>
-              <div>
-                <h5>{viewedUser.propertyId}</h5>
-                <h5 style={{ color: '#090030' }} className="mt-4">{viewedUser.firstName}</h5>
-                <h5 style={{ color: '#090030' }} className="mt-4">{viewedUser.lastName}</h5>
-                <h5 style={{ color: '#090030' }} className="mt-4">{viewedUser.email}</h5>
-                <h5 style={{ color: '#090030' }} className="mt-4">{viewedUser.phone}</h5>
-                <h5 style={{ color: '#090030' }} className="mt-4">{viewedUser.role}</h5>
-              </div>
-            </div>
-          </Modal.Body>
-        </Modal>
-       </div>
-    )}
+            </Modal.Body>
+          </Modal>
+        </div>
+      )}
     </>
   );
 }
