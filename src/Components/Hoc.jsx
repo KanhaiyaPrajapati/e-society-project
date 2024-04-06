@@ -17,9 +17,9 @@ export const Hoc = (Component) => {
   const NewComponent = () => {
 
 
+    const toast = useRef(null);
     const [lgShow, setLgShow] = useState(false);
 
-    const toast = useRef(null);
 
     let GetLoginAdminMangerResponse = JSON.parse(localStorage.getItem('LoginRes'));
     console.log(GetLoginAdminMangerResponse.userRole);
@@ -30,8 +30,8 @@ export const Hoc = (Component) => {
     let logout = () => {
       use.item = localStorage.removeItem("item");
       use.setitem(use.item);
-
     }
+
     return <div className="d-flex">
       <div className="sidebar">
         <div className="text-center py-3">
@@ -57,8 +57,7 @@ export const Hoc = (Component) => {
                   size="lg"
                   show={lgShow}
                   onHide={() => setLgShow(false)}
-                  aria-labelledby="example-modal-sizes-title-lg"
-                >
+                  aria-labelledby="example-modal-sizes-title-lg">
                   <Modal.Header closeButton>
                     <Modal.Title id="example-modal-sizes-title-lg">
                       Search Bar
@@ -84,8 +83,6 @@ export const Hoc = (Component) => {
         <Component />
       </div>
     </div>
-
   }
   return NewComponent
 }
-

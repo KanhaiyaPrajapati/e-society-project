@@ -1,4 +1,5 @@
 import './App.css';
+import 'react-notifications/lib/notifications.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import Login from './Components/Login';
@@ -38,9 +39,6 @@ function App() {
   useEffect(() => {
     dispatch(getManagerallapidata())
   }, [])
-
-
-
 
   return (
     <>

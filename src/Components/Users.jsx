@@ -21,8 +21,8 @@ function Users() {
   const [lgShow, setLgShow] = useState(false);
   const [propertyOptions, setPropertyOptions] = useState([]);
   const [viewedUser, setViewedUser] = useState('');
-  let [obj, setobj] = useState({ firstName: '', lastName: '', email: '', phone: '', role: '', propertyId: '', blockId: '', unitId: '', managerId: '' })
-  let [blankobj, setblankobj] = useState({})
+  let   [obj, setobj] = useState({ firstName: '', lastName: '', email: '', phone: '', role: '', propertyId: '', blockId: '', unitId: '', managerId: '' })
+  let   [blankobj, setblankobj] = useState({})
   const [show, setShow] = useState(false);
   const [searchInput, setsearchInput] = useState('')
   let checkAlphabet = /^[a-zA-Z0-9]+$/;
@@ -106,7 +106,7 @@ function Users() {
 
   const getvalue = (e) => {
     if (e.target.type === 'propertyId') {
-      obj[e.target.name] = Array.from(e.target.selectedOptions, (option) => option.value)
+      obj[e.target.name] = Array.from(e.target.selectedOptions,(option) => option.value)
     }
     else {
       obj[e.target.name] = e.target.value;
@@ -121,26 +121,36 @@ function Users() {
   //======================================== Function for Admin Panel =============================
 
   let SubmitAdminData = async () => {
-    await Promise.all(Object.keys(obj).map(async (x) => {
-      await ValidationFunction(x);
-    }));
-    if (Object.keys(errorMsg).length === 0) {
-      if (obj.id === undefined) {
-        await dispatch(addapidata(obj, auth));
+    try {
+      await Promise.all(Object.keys(obj).map(async (x) => {
+        await ValidationFunction(x);
+      }));
+  
+      if (Object.keys(errorMsg).length === 0) {
+        if (obj.id === undefined) {
+          dispatch(addapidata(obj, auth));
+        } else {
+          dispatch(EditApiData(obj, auth));
+        }
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Your work has been saved',
+          showConfirmButton: false,
+          timer: 2500
+        });
+        setobj({ ...blankobj });
       } else {
-        await dispatch(EditApiData(obj, auth));
+        console.log('Validation errors:', errorMsg);
       }
-      Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'Your work has been saved',
-        showConfirmButton: false,
-        timer: 2500
-      });
-      setobj({ ...blankobj });
-      handleClose();
+    } catch (error) {
+      console.error('Error in SubmitAdminData:', error);
+      // Handle error here, if needed
     }
+    handleClose();
   };
+  
+  
 
 
   const deleteData = (id) => {
@@ -182,7 +192,7 @@ function Users() {
   let SubmitManagerData = async () => {
     await Promise.all(Object.keys(obj).map(async (x) => {
       await ValidationFunction(x);
-    }));
+    }))
     if (Object.keys(errorMsg).length === 0) {
       if (obj.id === undefined) {
         dispatch(AddMAnagerAPiData(obj, auth))
@@ -237,11 +247,13 @@ function Users() {
   return (
     <>
       {/*============================================ Admin Table and Form ============================================= */}
+  
       {condition === 'Admin' && (
         // Render Admin Table and Form
         <div className="shadow-lg mx-auto mt-5 border border-warning" style={{ width: "90%" }} data-aos='zoom-in-up' >
           <div className=" d-flex justify-content-between px-1 py-3 lx " >
             <div>
+  
               <h4 className="ms-3 ">Users<span className="ms-2">{state.length}</span></h4>
             </div>
             <div className="px-5 d-flex ">
@@ -302,7 +314,7 @@ function Users() {
                   <Button variant="secondary" onClick={handleClose}>
                     Close
                   </Button>
-                  <Button variant="primary" type="button" onClick={SubmitAdminData}>
+                  <Button variant="warning" type="button" onClick={SubmitAdminData}>
                     Submit
                   </Button>
                 </Modal.Footer>
@@ -361,12 +373,7 @@ function Users() {
         </div>
       )}
 
-
-
-
-
-      {/*============================================ Manager Table and Form ============================================= */}
-
+   {/*============================================ Manager Table and Form ============================================= */}
 
       {condition === 'Manager' && (
         // Render Manager Table and Form

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { Bar, Doughnut, Line, Pie, PolarArea, Radar } from 'react-chartjs-2';
 import { Hoc } from "./Hoc";
 import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js";
-import { Bar, Doughnut, Line, Pie, PolarArea, Radar } from 'react-chartjs-2';
 import Card from 'react-bootstrap/Card';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import propertyimage from '../images/property1.png';
@@ -15,6 +15,8 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import axios from "axios";
 import Swal from 'sweetalert2';
+
+
 
 function Dashboard() {
   const [dashboarddata, setdashboarddata] = useState('');
@@ -57,7 +59,7 @@ function Dashboard() {
       }
     };
     fetchUnitData();
-  }, []);
+  },[]);
 
   useEffect(() => {
     axios.get('http://localhost:8000/api/property/count/property', auth)
@@ -93,56 +95,58 @@ function Dashboard() {
   //   }
   // },[])
 
-  // useEffect(() => {
-  //   if (condition === 'Admin' || condition === 'Manager') {
-  //     if (!loggedIn) {
-  //       const Toast = Swal.mixin({
-  //         toast: true,
-  //         position: 'top-end',
-  //         showConfirmButton: false,
-  //         timer: 3000,
-  //         timerProgressBar: true,
-  //         didOpen: (toast) => {
-  //           toast.onmouseenter = Swal.stopTimer;
-  //           toast.onmouseleave = Swal.resumeTimer;
-  //         }
-  //       });
-  //       Toast.fire({
-  //         icon: "success",
-  //         title: `${condition} Login SuccessFully`,
-  //       });
-  //       setLoggedIn(true);
-  //     }
-  //   } else {
-  //     console.log('User ID password is not Valid');
-  //   }
-  // }, [loggedIn, condition]);
+  useEffect(() => {
+    if (condition === 'Admin' || condition === 'Manager') {
+      if (!loggedIn) {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          }
+        });
+        Toast.fire({
+          icon: "success",
+          title: `${condition} Login SuccessFully`,
+        });
+        setLoggedIn(true);
+      }
+    } else {
+      console.log('User ID password is not Valid');
+    }
+  },[loggedIn, condition]);
+
+
 
   // IIFE Function
-  (function(){
-    if (condition === 'Admin' || condition === 'Manager') {
-          if (!loggedIn) {
-            const Toast = Swal.mixin({
-              toast: true,
-              position: 'top-end',
-              showConfirmButton: false,
-              timer: 1000,
-              timerProgressBar: true,
-              didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-              }
-            });
-            Toast.fire({
-              icon: "success",
-              title: `${condition} Login SuccessFully`,
-            });
-            setLoggedIn(true);
-          }
-        } else {
-          console.log('User ID password is not Valid');
-        }
-  })();
+  // (function(){
+  //   if (condition === 'Admin' || condition === 'Manager') {
+  //         if (!loggedIn) {
+  //           const Toast = Swal.mixin({
+  //             toast: true,
+  //             position: 'top-end',
+  //             showConfirmButton: false,
+  //             timer: 2000,
+  //             timerProgressBar: true,
+  //             didOpen: (toast) => {
+  //               toast.onmouseenter = Swal.stopTimer;
+  //               toast.onmouseleave = Swal.resumeTimer;
+  //             }
+  //           });
+  //           Toast.fire({
+  //             icon: "success",
+  //             title: `${condition} Login SuccessFully`,
+  //           });
+  //           setLoggedIn(true);
+  //         }
+  //       } else {
+  //         console.log('User ID password is not Valid');
+  //       }
+  // })();
 
   const Data = [
     { id: 1, year: 2016, userGain: 80000, userLost: 823 },
@@ -265,7 +269,7 @@ function Dashboard() {
                 <ProgressBar striped variant="danger"  animated now={30} className="mb-4" />
               </div>
             </div>
-          </div>
+          </div> 
         </div>
       </div>
       <div className="container-fluid charts border border-warning">
@@ -317,7 +321,6 @@ function Dashboard() {
   </>
   );
 }
-
 export default Hoc(Dashboard);
 
 

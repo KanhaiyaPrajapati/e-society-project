@@ -8,6 +8,7 @@ import { NumberContext } from './NewContext';
 import Swal from 'sweetalert2';
 import heroimg from '../images/seo.gif';
 
+
     const Login = () => {
     const toast = useRef(null);
     const [obj, setobj] = useState({userNameOrEmail:'',password:''})
@@ -20,6 +21,8 @@ import heroimg from '../images/seo.gif';
     let use = useContext(NumberContext);
     let token = JSON.parse(localStorage.getItem("token"))
     console.log(token);
+
+       
 
         const getvalue = (e) =>{
                 obj[e.target.name] = e.target.value;
@@ -81,6 +84,7 @@ import heroimg from '../images/seo.gif';
                 }
             }
             setobj({ ...blankobj });
+          
     };
         const ValidationFunction = (name) =>{
         let validationobj = LoginValidation.find((x)=>x.name === name);
@@ -116,6 +120,7 @@ import heroimg from '../images/seo.gif';
         <div className='mt-4 text-center' >
             <button className='btn btn-warning' type='button' onClick={SubmitData}>Submit</button>
         </div>
+        
          </form>
         </div>
     </div>

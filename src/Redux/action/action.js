@@ -18,7 +18,6 @@ export const getapi = () => {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: 'application/json',
-          managerId: 1,
         }
       })
       .then((res) => {
@@ -30,19 +29,51 @@ export const getapi = () => {
   };
 };
 
+// export const addapidata = (obj, auth) => {
+//   return (dispatch) => {
+//     axios
+//       .post("http://localhost:8000/api/user/admin-create", obj, auth)
+//       .then((res) => {
+//         console.log(res.data);
+//         dispatch(getapi(auth)); //auth not stay
+//       })
+//       .catch((err) => {
+//         console.log(err.response);
+//       });
+//   };
+// };
+
+// export const addapidata = (obj,auth) =>{
+//   return async (dispatch)=>{
+//     try {
+//        let res = await axios.post(`http://localhost:8000/api/user/admin-create`,obj,{
+//         headers:{
+//           Authorization:`Bearer ${token}`,
+//           Accept:'application/json',
+//           managerId:1,
+//           blockId:1,
+//           unitId:1
+//         }
+//        }) 
+//       console.log(res.data); 
+//       dispatch(getapi(auth)) 
+//     } catch (error) {
+
+//     }
+//   }
+// }
+
 export const addapidata = (obj, auth) => {
-  return (dispatch) => {
-    axios
-      .post("http://localhost:8000/api/user/admin-create", obj, auth)
-      .then((res) => {
-        console.log(res.data);
-        dispatch(getapi(auth)); //auth not stay
-      })
-      .catch((err) => {
-        console.log(err.response);
-      });
-  };
-};
+  return async (dispatch) => {
+    try {
+      let res = await axios.post(`http://localhost:8000/api/user/admin-create`, obj, auth);
+      console.log(res.data);
+      dispatch(getapi(auth))
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
 
 export const DeleteApidata = (id, auth) => {
   return (dispatch) => {
@@ -152,7 +183,7 @@ export const ViewPropertApiData = (id, setLgShow, setpropertviewApi) => {
     }
   };
 };
-
+      
 export const EditPropertyApidata = (obj, auth) => {
   return async (dispatch) => {
     try {
