@@ -15,11 +15,11 @@ import { Formik, Form, Field } from "formik";
 import axios from 'axios';
 import * as Yup from "yup";
 import { NavLink, json } from 'react-router-dom';
-import { AddPropertyBlockApiData, DeletePropertyBlockApiData, UpdatePropertyBlockApiData, ViewPropertyBlockApiData } from '../Redux/action/action';
 import Swal from 'sweetalert2';
 import Tooltip from '@mui/material/Tooltip';
 import icons from '../images/Property.png'
 import AddIcon from '@mui/icons-material/Add';
+import { AddPropertyBlockApiData, DeletePropertyBlockApiData, UpdatePropertyBlockApiData, ViewPropertyBlockApiData } from '../Redux/action/action';
 
 
 function Blocks() {

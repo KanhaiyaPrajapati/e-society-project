@@ -417,8 +417,6 @@ export const UpdateManagerApiData = (obj, auth) => {
   }
 }
 
-
-
 export const DeleteManagerApiData = (id) => {
   return async (dispatch) => {
     try {

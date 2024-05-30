@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Bar, Doughnut, Line, Pie, PolarArea, Radar } from 'react-chartjs-2';
-import { Hoc } from "./Hoc";
-import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js";
+import Chart from "chart.js/auto";
+import { Hoc } from "./Hoc";
 import Card from 'react-bootstrap/Card';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import propertyimage from '../images/property1.png';
@@ -15,8 +15,6 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import axios from "axios";
 import Swal from 'sweetalert2';
-
-
 
 function Dashboard() {
   const [dashboarddata, setdashboarddata] = useState('');
@@ -272,9 +270,9 @@ function Dashboard() {
           </div> 
         </div>
       </div>
-      <div className="container-fluid charts border border-warning">
-        <div className='d-flex justify-content-evenly mx-auto' style={{ width: '100%' }}   >
-          <div className="chart-container mt-5" style={{ width: '33%', height: '300px', }}>
+      <div className="container-fluid charts border border-warning" style={{ width: '97%' }} >
+        <div className='d-flex justify-content-evenly mx-auto'   >
+          <div className="chart-container mt-5" style={{ width: '30%', height: '300px', }}>
             <Line
               data={chartData}
               options={{
@@ -326,7 +324,6 @@ export default Hoc(Dashboard);
 
 // <div className='d-flex gap-1 py-3 mt-2 ms-auto' data-aos='fade-up'>
 //     <div className="chart-container text-center px-4" style={{width:'33%',height:'300px'}}>
-
 //       <Doughnut  className="text-center"
 //         data={chartData}
 //         options={{
@@ -341,7 +338,6 @@ export default Hoc(Dashboard);
 //     </div>
 
 //   <div className="chart-container px-3 pt-3" style={{width:'50%',height:'350px'}}>
-   
 //       <Bar
 //         data={chartData}
 //         options={{

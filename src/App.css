@@ -7,6 +7,9 @@
   font-family: "Fira Sans Extra Condensed", sans-serif;
   font-weight: 700;
   font-style: normal;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 @property --angle {
   syntax: "<angle>";
@@ -16,7 +19,8 @@
 .bada-header{
   width: 100%;
   height: 100vh;
-  background-color: #15191a;
+  /* background-color: #15191a; */
+  background-color: #242731;
 }
 .moving-border {
   width: 100px;
@@ -60,11 +64,17 @@
 .sidebar{
   width: 250px;
   height: 100vh;
-  background-color: rgb(12, 32, 33);
+  /* background-color: #11192a; */
+  /* background-color: rgb(17, 25, 42); */
+  background-color: rgb(23, 46, 46);
+  /* background-color: #333333 ; */
+  /* background-color: #303035  ; */
+  /* background-color: #5C6BC0 ; */
+
 }
 .header{
 width: 100%;
-height: 70px;
+height: 77px;
 box-shadow: 5px 0px 8px 0px lightgray;
 }
 .sidebar .sidebar-menu div {
@@ -297,11 +307,83 @@ input[type="checkbox"]:checked + .switch::after {
   transform: translateX(20px); /* Adjust as needed */
 }
 
+.getswitched{
+  outline: none !important;
+}
 .getswitched:hover{
-  cursor: pointer;
+  cursor: pointer !important;
+  border-color: #007bff !important;
+  outline: none !important;
+  box-shadow: 0 0 5px #007bff !important;
 }
 
+/* 
+.serachbar-box{
+  position: relative;
+}
 
+.child-serch-icon{
+  position: relative;
+  top:0px;
+  left:0px;
+
+} */
+
+
+.searchbar-box {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  transition: all 0.3s ease-in-out;
+}
+
+.searchbar-box:hover {
+  transform: scale(0.95);
+}
+
+.search-icon {
+  margin-right: 8px;
+  --bs-text-opacity: 1;
+  color: rgba(108, 93, 211, var(--bs-text-opacity)) !important;
+  color: rgba(var(--bs-primary-rgb), var(--bs-text-opacity)) !important;
+  
+}
+
+.search-input {
+  border: 1px solid transparent;
+  padding: 5px;
+  border-radius: 5px;
+  transition: all 0.3s ease-in-out;
+
+ 
+}
+.search-input:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px #007bff;
+}
+
+.dots-parent{
+  position: relative;
+}
+.dots{
+  position: absolute;
+  top: 26px;
+  left: 22px;
+  /* color: rgb(73, 195, 177); */
+  color: green;
+  font-size: 18px !important;
+}
+
+.badge-parent{
+  position: relative;
+}
+.badge{
+  position: absolute;
+  top: -1px;
+  left: 13px;
+  font-size: 10px !important;
+}
 
 
 
